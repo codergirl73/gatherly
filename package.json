@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "qloo:smoke": "tsx --env-file=.env.local scripts/qloo-smoke.mts"
+    "qloo:smoke": "tsx --env-file=.env.local scripts/qloo-smoke.mts",
+    "test:live": "vitest run --config vitest.live.config.mts"
   },
   "dependencies": {
     "@google/genai": "^2.31.0",

@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #fbf9f6;
+  --surface: #ffffff;
+  --surface-2: #f4f0ea;
+  --border: #e8e1d7;
+  --fg: #1d1a24;
+  --muted: #6b6676;
+  --brand: #6d4aff;
+  --brand-fg: #ffffff;
+  --brand-soft: #efeaff;
+  --accent: #ff6b4a;
+  --good: #14915f;
+  --warn: #b7791f;
+  --ring: rgba(109, 74, 255, 0.35);
+}
+
+.dark {
+  --bg: #0f0d14;
+  --surface: #17141f;
+  --surface-2: #1f1b2a;
+  --border: #2d2840;
+  --fg: #f3f0fa;
+  --muted: #a39cb8;
+  --brand: #9b82ff;
+  --brand-fg: #120d26;
+  --brand-soft: #251f3d;
+  --accent: #ff8567;
+  --good: #3ecf8e;
+  --warn: #f0b429;
+  --ring: rgba(155, 130, 255, 0.45);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.bg-hero {
+  background:
+    radial-gradient(60rem 30rem at 15% -10%, color-mix(in srgb, var(--brand) 22%, transparent), transparent 60%),
+    radial-gradient(50rem 28rem at 95% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.45s ease both; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 37%, var(--surface-2) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .skeleton { animation: none; }
+}
+
+@media print {
+  header, footer, .no-print { display: none !important; }
+  body { background: #fff; }
 }

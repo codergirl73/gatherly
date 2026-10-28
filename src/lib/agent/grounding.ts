@@ -47,6 +47,7 @@ export function groundPlan(raw: unknown, ctx: RunContext): GroundingResult {
     p.fits = cleanFits(p.fits.length ? p.fits : c?.fits ?? [], label);
   };
 
+  if (plan.venue.cuisine.length > 30) errors.push('venue.cuisine: use a short label of 1-3 words taken from the candidate\'s tags (e.g. "Portuguese"), not a sentence.');
   ground(plan.venue, "venue", "venue");
   plan.playlist.artists.forEach((a, i) => ground(a, "playlist", `playlist.artists[${i}]`));
   ground(plan.activity, "activity", "activity");

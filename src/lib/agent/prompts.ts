@@ -25,6 +25,7 @@ Grounding rules (strict):
 - "fits" lists only member names that appear in the candidate's fits_members (you may add members you can justify from shared_themes).
 - Treat dietary needs, accessibility and budget ONLY as the explicit constraints above. Never infer them from taste. Say how the plan respects them in constraintsNote, and tell the organizer to confirm with the venue.
 - State only facts present in the tool results (names, addresses, tags, which members it fits). Do not invent amenities, menus, drinks, ambience or reviews (e.g. never say a venue "has a full bar"). For constraints, say the organizer must confirm with the venue.
+- venue.cuisine is a short label (1-3 words) taken from the venue's tags or the cuisine used.
 - Prefer picks with fits_count >= 2 whenever possible; the playlist should mostly use artists that fit two or more members.
 - In tradeoffs, "between" must list the member names involved.
 - Do not state opening hours, prices or availability as facts; the UI labels them "check before booking".
