@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gatherly
 
-## Getting Started
+**An AI agent that plans group events everyone will enjoy, powered by [Qloo](https://qloo.com)'s Taste AI.**
 
-First, run the development server:
+> Live demo: _add the Vercel URL here after deploy_
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Gatherly takes a group of 3–6 people (each sharing a few favorite films, shows, artists, restaurants, places, brands or books), finds where their tastes overlap and where they differ, and plans the event: **venue and cuisine, a theme, a playlist, an activity and a film**. Every pick explains *whose favorites it connects to*. When tastes clash, Gatherly flags the tradeoff and offers a balanced alternative.
+
+Built for the Qloo Agentic Hackathon. All demo people are synthetic.
+
+## Judge's guide (60 seconds)
+
+1. Open the live demo and click **Try a demo group** (or pick a preset card: New York tech team, London birthday, Lisbon remote offsite).
+2. Watch the agent's steps stream in ("Matching Priya's favorites…", "Finding restaurants in New York…"). It takes about 40–60 seconds.
+3. Read the **taste overlap** section: group overlap score, themes shared by the group, each person's unique themes and a pairwise similarity grid.
+4. Scroll the plan cards. Open **"Why Qloo matched this"** on any pick to see the favorites and tags behind it.
+5. Click **Qloo on / off** to see the same group planned by an LLM alone, next to the Qloo plan. Notice the LLM-only plan mostly recycles the group's own favorites, invents venue details and has nothing to back it up.
+6. Optional: **Plan your own event** to enter any group, city, budget and constraints.
+
+## The problem
+
+Planning for a group means negotiating taste. Someone always loses: the vegetarian, the one who hates loud bars, the person whose music never makes the playlist. Asking an LLM "what should we do?" produces generic, plausible-sounding suggestions with no data behind them, and sometimes venues that don't exist.
+
+## How Qloo is used (and why it beats an LLM alone)
+
+Qloo is the **only source of recommendations**. The LLM (Gemini) orchestrates and writes, but it can only recommend entities Qloo returned in that run.
+
+| Step | Qloo endpoint | What it does |
+|---|---|---|
+| Resolve favorites | `GET /search` (`types=` per category) | Maps each typed favorite to a Qloo entity ID plus its taste tags. Food favorites that are cuisines ("ramen") fall back to `GET /v2/tags`. |
+| Measure overlap | `GET /v2/analysis/compare` | Each person's entities vs. the rest of the group. Tags present on both sides = shared taste; tags only on one side = individual taste. Falls back to entity-level tags if compare returns nothing. |
+| Venue / cuisine | `GET /v2/insights` with `filter.type=urn:entity:place`, `filter.location.query=<city>`, `filter.tags=<cuisine or restaurant tag>`, `filter.price_level.max=<budget>` | Restaurants in the chosen city, seeded by the group's entities. |
+| Activity | `GET /v2/insights` (places, restaurants excluded via `filter.exclude.tags`) | Non-dining things to do in the city. |
+| Playlist | `GET /v2/insights` with `filter.type=urn:entity:artist` | New artists connected to the group's taste. |
+| Film | `GET /v2/insights` with `filter.type=urn:entity:movie` | Films connected to the group's taste. |
+
+The legacy `/recs` and `/recommendations` endpoints are not used.
+
+**Ranking by how many members a pick fits.** For each part of the event we call insights once for the whole group *and* once per person. A candidate "fits" a person if it appears in that person's results. Picks are ranked by city match, then fit count, then Qloo affinity. This is real Qloo data, not a model's guess.
+
+**Why it is better than an LLM alone**
+
+- *Grounded:* a validator (`src/lib/agent/grounding.ts`) rejects any plan whose picks were not returned by Qloo for the right part of the event. Names and addresses are overwritten from Qloo data, so the model cannot alter them.
+- *Discovery:* Qloo recommends artists and places the group hasn't mentioned but would like. The LLM-only baseline mostly repeats the group's own favorites.
+- *Location-aware:* venues come from Qloo's locality-aware place graph, and a live test checks the city filter is honored (Qloo silently ignores unsupported parameters, so we verify).
+- *Explainable:* each pick links to the specific favorites and shared tags that produced it.
+
+### Honesty rules baked into the agent
+
+- Never invents venues, artists or films.
+- Dietary needs, accessibility and budget are **explicit user inputs only**, never inferred from taste.
+- No claims about opening hours, prices or availability: the UI labels these "check before booking".
+- Gatherly never books or pays for anything.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  U[Browser<br/>Next.js UI] -- POST group --> P[/api/plan<br/>streams NDJSON/]
+  U -- POST group --> B[/api/baseline<br/>LLM only/]
+  P --> A[Agent loop<br/>Gemini on Vertex AI]
+  A -- tool call --> T[Tools]
+  T --> R[resolve_entities]
+  T --> C[compare_tastes]
+  T --> I[get_insights]
+  T --> BP[build_plan]
+  R & C & I --> Q[Qloo client<br/>queue 4 rps · retries · cache]
+  Q --> QA[(Qloo hackathon API<br/>/search · /v2/insights<br/>/v2/analysis/compare · /v2/tags)]
+  BP --> G[Grounding validator<br/>zod + Qloo-only picks]
+  G --> U
+  B --> L[Gemini, no tools]
+  L --> U
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Tech:** Next.js (App Router) + TypeScript + Tailwind, zod, Vitest. No database; state lives in the browser, and the server caches Qloo responses in memory.
+- **Qloo client** (`src/lib/qloo/client.ts`): request queue (max 4 starts/second), per-request timeout, exponential backoff on 429/5xx honoring `Retry-After`, in-memory cache plus in-flight de-duplication. The API key is only ever used server-side.
+- **Agent** (`src/lib/agent/`): Gemini function-calling loop with four tools (`resolve_entities`, `compare_tastes`, `get_insights`, `build_plan`). Progress events stream to the UI as the tools run.
+- **Plan JSON** is validated with zod (`src/lib/schemas.ts`) and grounded before the UI sees it.
+- **"Login"** is a demo-grade local profile (name + email kept in `localStorage`). There are no accounts, passwords or server-side user data.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Requirements: Node 20+, a Qloo hackathon API key, and a Google Cloud project with Vertex AI enabled.
 
-## Learn More
+```bash
+git clone <this repo> && cd gatherly
+npm install
+cp .env.example .env.local   # then fill it in
+gcloud auth application-default login   # local Gemini auth (no key file needed)
+npm run dev                  # http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+Environment variables (see `.env.example`):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Purpose |
+|---|---|
+| `QLOO_API_KEY` | Qloo hackathon key. Works only against `https://hackathon.api.qloo.com`. |
+| `GOOGLE_CLOUD_PROJECT` | GCP project with Vertex AI. |
+| `GOOGLE_CLOUD_LOCATION` | Vertex region (default `us-central1`). |
+| `GEMINI_MODEL` | Model id (default `gemini-2.5-flash`). |
+| `GOOGLE_SERVICE_ACCOUNT_JSON_B64` | Hosted deploys only: base64 of a service-account JSON with the *Vertex AI User* role. |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tests and checks
 
-## Deploy on Vercel
+```bash
+npm test             # unit tests: Qloo client (mocked), overlap logic, plan validation + grounding
+npm run test:live    # integration: runs a preset against the live Qloo API (needs QLOO_API_KEY)
+npm run typecheck && npm run lint
+npm run qloo:smoke   # prints raw /search and /v2/insights output for your key
+npx tsx --env-file=.env.local scripts/run-preset.mts lisbon-remote   # full agent run in the terminal
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The live suite checks that `/search` resolves entities, that place results for Lisbon, London and New York are really in those cities, that different cities give different results (the filter isn't silently ignored), and that a preset group yields in-city venue and activity candidates.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy to Vercel
+
+1. Import the repo in Vercel (framework: Next.js).
+2. Add the environment variables above. For `GOOGLE_SERVICE_ACCOUNT_JSON_B64`, create a service account with the *Vertex AI User* role, download its JSON key, and run `base64 -i key.json | tr -d '\n'`.
+3. Deploy. The plan route sets `maxDuration = 300`; a plan usually takes 40–60 s, so use a plan with Fluid Compute (the Hobby default allows this) and confirm the function timeout in project settings.
+
+## Limitations
+
+- Qloo's locality boundary is slightly expanded, so a few results can sit just outside the city. They are ranked below in-city matches.
+- Qloo returns no live hours, prices or availability. Gatherly says so and never books anything.
+- Dietary and accessibility constraints are echoed and flagged for confirmation with the venue. Qloo doesn't verify them.
+- The overlap score is a measure of tag similarity, not a prediction of enjoyment.
+- Per-IP rate limiting is in-memory (per server instance), and the Qloo cache resets on cold starts.
+- Entity matching is by name search: ambiguous names may match the wrong entity. Gatherly surfaces a warning when the match looks uncertain.
+- Qloo response data is cached privately in server memory only and is never stored in this repository.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
