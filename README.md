@@ -14,7 +14,7 @@ Built for the Qloo Agentic Hackathon. All demo people are synthetic.
 2. Watch the agent's steps stream in ("Matching Priya's favorites…", "Finding restaurants in New York…"). It takes about 40–60 seconds.
 3. Read the **taste overlap** section: group overlap score, themes shared by the group, each person's unique themes and a pairwise similarity grid.
 4. Scroll the plan cards. Open **"Why Qloo matched this"** on any pick to see the favorites and tags behind it.
-5. Click **Qloo on / off** to see the same group planned by an LLM alone, next to the Qloo plan. Notice the LLM-only plan mostly recycles the group's own favorites, invents venue details and has nothing to back it up.
+5. Click **Qloo on / off** to see the same group planned by an LLM alone, next to the Qloo plan. In our runs the LLM-only plan tended to recycle the group's own favorites and add unverifiable details, with nothing to back them up.
 6. Optional: **Plan your own event** to enter any group, city, budget and constraints.
 
 ## The problem
@@ -116,7 +116,7 @@ The live suite checks that `/search` resolves entities, that place results for L
 
 1. Import the repo in Vercel (framework: Next.js).
 2. Add the environment variables above. For `GOOGLE_SERVICE_ACCOUNT_JSON_B64`, create a service account with the *Vertex AI User* role, download its JSON key, and run `base64 -i key.json | tr -d '\n'`.
-3. Deploy. The plan route sets `maxDuration = 300`; a plan usually takes 40–60 s, so use a plan with Fluid Compute (the Hobby default allows this) and confirm the function timeout in project settings.
+3. Deploy. A plan usually takes 40–60 s. The plan route sets `maxDuration = 300`, so enable Fluid Compute and check your plan's function-timeout limit in Vercel's project settings; on a 60 s limit, lower `maxTurns` in `src/lib/agent/loop.ts`.
 
 ## Limitations
 
