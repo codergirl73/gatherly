@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1810 1170" width="1810" height="1170" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<defs><marker id="m" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1d1a24"/></marker></defs>
+<rect width="1810" height="1170" fill="#fbf9f6"/>
+<text x="40" y="54" font-size="36" font-weight="800" fill="#1d1a24" text-anchor="start">Gatherly architecture</text>
+<text x="40" y="84" font-size="17" font-weight="400" fill="#6b6676" text-anchor="start">Qloo supplies every recommendation. Gemini orchestrates and explains. Code, not a prompt, guarantees that every pick is real.</text>
+<rect x="30" y="112" width="1750" height="236" rx="26" fill="#efeaff" stroke="#6d4aff" stroke-opacity=".35" stroke-width="2"/>
+<text x="56" y="140" font-size="15" font-weight="800" fill="#6d4aff" text-anchor="start">EXPERIENCE</text>
+<text x="1754" y="140" font-size="14" font-weight="500" fill="#6b6676" text-anchor="end">Browser · Next.js, React, Tailwind, Three.js</text>
+<rect x="56" y="168" width="322" height="160" rx="16" fill="#fff" stroke="#6d4aff" stroke-width="2.2"/>
+<rect x="56" y="168" width="8" height="160" rx="4" fill="#6d4aff"/>
+<text x="82" y="202" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🧑‍🤝‍🧑  Crew builder</text>
+<text x="82" y="230" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Search-as-you-type over Qloo</text>
+<text x="82" y="253" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">with posters and tags</text>
+<text x="82" y="276" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Event · city · budget · needs</text>
+<rect x="405" y="168" width="322" height="160" rx="16" fill="#fff" stroke="#6d4aff" stroke-width="2.2"/>
+<rect x="405" y="168" width="8" height="160" rx="4" fill="#6d4aff"/>
+<text x="431" y="202" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">⏱️  Live progress</text>
+<text x="431" y="230" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Streams every agent step</text>
+<text x="431" y="253" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">'Matching favorites…'</text>
+<text x="431" y="276" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">'Finding venues in Lisbon…'</text>
+<rect x="754" y="168" width="322" height="160" rx="16" fill="#fff" stroke="#6d4aff" stroke-width="2.2"/>
+<rect x="754" y="168" width="8" height="160" rx="4" fill="#6d4aff"/>
+<text x="780" y="202" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">✨  Results</text>
+<text x="780" y="230" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Taste-overlap visualization</text>
+<text x="780" y="253" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Plan cards: 'why Qloo matched this'</text>
+<text x="780" y="276" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Qloo on / off comparison</text>
+<rect x="1103" y="168" width="322" height="160" rx="16" fill="#fff" stroke="#6d4aff" stroke-width="2.2"/>
+<rect x="1103" y="168" width="8" height="160" rx="4" fill="#6d4aff"/>
+<text x="1129" y="202" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🪐  Landing &amp; 3D</text>
+<text x="1129" y="230" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Three.js scene of a group</text>
+<text x="1129" y="253" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">gathering around one plan</text>
+<text x="1129" y="276" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">One-click example groups</text>
+<rect x="1452" y="168" width="322" height="160" rx="16" fill="#fff" stroke="#6d4aff" stroke-width="2.2"/>
+<rect x="1452" y="168" width="8" height="160" rx="4" fill="#6d4aff"/>
+<text x="1478" y="202" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">👤  Account &amp; events</text>
+<text x="1478" y="230" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Sign up · sign in · magic link</text>
+<text x="1478" y="253" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Saved plans per user</text>
+<text x="1478" y="276" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Guest mode on this device</text>
+<rect x="30" y="428" width="1750" height="336" rx="26" fill="#fff0ea" stroke="#ff6b4a" stroke-opacity=".35" stroke-width="2"/>
+<text x="56" y="456" font-size="15" font-weight="800" fill="#ff6b4a" text-anchor="start">GATHERLY SERVER</text>
+<text x="1754" y="456" font-size="14" font-weight="500" fill="#6b6676" text-anchor="end">Vercel · Next.js route handlers (keys never reach the browser)</text>
+<rect x="56" y="472" width="344" height="134" rx="16" fill="#fff" stroke="#ff6b4a" stroke-width="2.2"/>
+<rect x="56" y="472" width="8" height="134" rx="4" fill="#ff6b4a"/>
+<text x="82" y="506" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🛣️  API routes</text>
+<text x="82" y="534" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">GET  /api/suggest   typeahead</text>
+<text x="82" y="557" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">POST /api/plan   NDJSON stream</text>
+<text x="82" y="580" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">POST /api/baseline   Qloo off</text>
+<rect x="56" y="624" width="344" height="128" rx="16" fill="#fff" stroke="#ff6b4a" stroke-width="2.2"/>
+<rect x="56" y="624" width="8" height="128" rx="4" fill="#ff6b4a"/>
+<text x="82" y="658" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🧰  Qloo client</text>
+<text x="82" y="686" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Queue ≤ 4 req/s · retry + backoff</text>
+<text x="82" y="709" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Cache + in-flight de-dup</text>
+<text x="82" y="732" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Per-IP rate limits on routes</text>
+<rect x="440" y="472" width="700" height="280" rx="16" fill="#fff" stroke="#ff6b4a" stroke-width="2.2"/><rect x="440" y="472" width="8" height="280" rx="4" fill="#ff6b4a"/>
+<text x="466" y="506" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🤖  Agent loop · Gemini function calling</text>
+<rect x="466" y="526" width="320" height="66" rx="12" fill="#fff0ea" stroke="#ff6b4a" stroke-width="1.8"/>
+<text x="482" y="552" font-size="15" font-weight="800" fill="#ff6b4a" text-anchor="start">resolve_entities</text>
+<text x="482" y="574" font-size="13.5" font-weight="400" fill="#3b3646" text-anchor="start">favorites → Qloo entity IDs</text>
+<rect x="806" y="526" width="320" height="66" rx="12" fill="#fff0ea" stroke="#ff6b4a" stroke-width="1.8"/>
+<text x="822" y="552" font-size="15" font-weight="800" fill="#ff6b4a" text-anchor="start">compare_tastes</text>
+<text x="822" y="574" font-size="13.5" font-weight="400" fill="#3b3646" text-anchor="start">each person vs the rest of the group</text>
+<rect x="466" y="606" width="320" height="66" rx="12" fill="#fff0ea" stroke="#ff6b4a" stroke-width="1.8"/>
+<text x="482" y="632" font-size="15" font-weight="800" fill="#ff6b4a" text-anchor="start">get_insights</text>
+<text x="482" y="654" font-size="13.5" font-weight="400" fill="#3b3646" text-anchor="start">venue · playlist · activity · film</text>
+<rect x="806" y="606" width="320" height="66" rx="12" fill="#fff0ea" stroke="#ff6b4a" stroke-width="1.8"/>
+<text x="822" y="632" font-size="15" font-weight="800" fill="#ff6b4a" text-anchor="start">build_plan</text>
+<text x="822" y="654" font-size="13.5" font-weight="400" fill="#3b3646" text-anchor="start">structured plan JSON (zod schema)</text>
+<text x="466" y="706" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Ranks candidates by city match, members fitted, then affinity.</text>
+<text x="466" y="730" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Retries on transient errors and falls back to a second model.</text>
+<rect x="1180" y="472" width="570" height="280" rx="16" fill="#fff" stroke="#14915f" stroke-width="2.2"/>
+<rect x="1180" y="472" width="8" height="280" rx="4" fill="#14915f"/>
+<text x="1206" y="506" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🛡️  Grounding validator</text>
+<text x="1206" y="534" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Every pick's entity ID must be a candidate</text>
+<text x="1206" y="557" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">returned by get_insights for that part</text>
+<text x="1206" y="580" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">of the event.</text>
+<text x="1206" y="603" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start"></text>
+<text x="1206" y="626" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Names and addresses are overwritten</text>
+<text x="1206" y="649" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">from Qloo data. 'Fits' lists only real</text>
+<text x="1206" y="672" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">group members. Rejected plans go back to</text>
+<text x="1206" y="695" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Gemini with the errors to fix.</text>
+<rect x="30" y="844" width="1750" height="262" rx="26" fill="#e8f6ef" stroke="#14915f" stroke-opacity=".35" stroke-width="2"/>
+<text x="56" y="872" font-size="15" font-weight="800" fill="#14915f" text-anchor="start">INTELLIGENCE &amp; DATA</text>
+<text x="1754" y="872" font-size="14" font-weight="500" fill="#6b6676" text-anchor="end">External services</text>
+<rect x="56" y="888" width="520" height="196" rx="16" fill="#fff" stroke="#6d4aff" stroke-width="2.2"/>
+<rect x="56" y="888" width="8" height="196" rx="4" fill="#6d4aff"/>
+<text x="82" y="922" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🧠  Qloo Taste AI</text>
+<text x="82" y="950" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">/search   entities, tags, images</text>
+<text x="82" y="973" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">/v2/analysis/compare   taste tags</text>
+<text x="82" y="996" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">/v2/insights   place · artist · movie</text>
+<text x="82" y="1019" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">   + location, tag and price filters</text>
+<text x="82" y="1042" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">/v2/tags   cuisines</text>
+<rect x="690" y="888" width="450" height="196" rx="16" fill="#fff" stroke="#ff6b4a" stroke-width="2.2"/>
+<rect x="690" y="888" width="8" height="196" rx="4" fill="#ff6b4a"/>
+<text x="716" y="922" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">💬  Gemini · Google</text>
+<text x="716" y="950" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Decides which tool to call next</text>
+<text x="716" y="973" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Writes explanations, theme, tradeoffs</text>
+<text x="716" y="996" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Produces the structured plan</text>
+<text x="716" y="1019" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Plain Gemini powers the Qloo-off view</text>
+<rect x="1250" y="888" width="500" height="196" rx="16" fill="#fff" stroke="#14915f" stroke-width="2.2"/>
+<rect x="1250" y="888" width="8" height="196" rx="4" fill="#14915f"/>
+<text x="1276" y="922" font-size="18" font-weight="800" fill="#1d1a24" text-anchor="start">🗄️  Supabase</text>
+<text x="1276" y="950" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Auth: email + password, magic link</text>
+<text x="1276" y="973" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Postgres table 'events'</text>
+<text x="1276" y="996" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">Row-level security: each user reads</text>
+<text x="1276" y="1019" font-size="14.5" font-weight="400" fill="#3b3646" text-anchor="start">and writes only their own rows</text>
+<polyline points="330,328 330,472" fill="none" stroke="#1d1a24" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#m)"/>
+<circle cx="330" cy="400" r="15" fill="#1d1a24"/>
+<text x="330" y="405.5" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+<polyline points="600,472 600,328" fill="none" stroke="#ff6b4a" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#m)"/>
+<circle cx="600" cy="400" r="15" fill="#ff6b4a"/>
+<text x="600" y="405.5" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">5</text>
+<polyline points="400,540 440,540" fill="none" stroke="#1d1a24" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#m)"/>
+<polyline points="440,688 400,688" fill="none" stroke="#1d1a24" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#m)"/>
+<polyline points="1140,566 1180,566" fill="none" stroke="#14915f" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#m)"/>
+<circle cx="1160" cy="536" r="15" fill="#14915f"/>
+<text x="1160" y="541.5" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">4</text>
+<polyline points="340,752 340,888" fill="none" stroke="#6d4aff" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#m)"/>
+<circle cx="340" cy="820" r="15" fill="#6d4aff"/>
+<text x="340" y="825.5" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+<polyline points="790,752 790,888" fill="none" stroke="#ff6b4a" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#m)" marker-start="url(#m)"/>
+<circle cx="790" cy="820" r="15" fill="#ff6b4a"/>
+<text x="790" y="825.5" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+<polyline points="1744,248 1796,248 1796,986 1750,986" fill="none" stroke="#14915f" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#m)"/>
+<circle cx="1796" cy="616" r="15" fill="#14915f"/>
+<text x="1796" y="621.5" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">6</text>
+<text x="40" y="1136" font-size="15" font-weight="800" fill="#1d1a24" text-anchor="start">Flow:</text>
+<text x="100" y="1136" font-size="14.5" font-weight="500" fill="#6b6676" text-anchor="start">1 Group sent to /api/plan</text>
+<text x="320.0" y="1136" font-size="14.5" font-weight="500" fill="#6b6676" text-anchor="start">2 Agent calls Gemini with tools</text>
+<text x="585.6" y="1136" font-size="14.5" font-weight="500" fill="#6b6676" text-anchor="start">3 Tools query Qloo</text>
+<text x="752.4" y="1136" font-size="14.5" font-weight="500" fill="#6b6676" text-anchor="start">4 Plan checked against Qloo results</text>
+<text x="1048.4" y="1136" font-size="14.5" font-weight="500" fill="#6b6676" text-anchor="start">5 Steps and plan stream back live</text>
+<text x="1329.2" y="1136" font-size="14.5" font-weight="500" fill="#6b6676" text-anchor="start">6 Signed-in users save events (RLS)</text>
+</svg>

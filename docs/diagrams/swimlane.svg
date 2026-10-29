@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1840 1763" width="1840" height="1763" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1d1a24"/></marker>
+<marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6d4aff"/></marker>
+<marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ff6b4a"/></marker>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d4aff"/><stop offset="1" stop-color="#ff6b4a"/></linearGradient>
+</defs>
+<rect width="1840" height="1763" fill="#fbf9f6"/>
+<text x="40" y="56" font-size="32" font-weight="700" fill="#1d1a24" text-anchor="start">Gatherly swimlane: from favorites to a grounded plan</text>
+<text x="40" y="86" font-size="16" font-weight="400" fill="#6b6676" text-anchor="start">Solid arrows are requests. Dashed arrows are responses. Every recommendation comes from Qloo; Gemini only orchestrates and writes.</text>
+<rect x="55" y="104" width="270" height="52" rx="12" fill="#555"/>
+<text x="190" y="134" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Organizer</text>
+<line x1="190" y1="156" x2="190" y2="1733" stroke="#d9d2c6" stroke-width="2" stroke-dasharray="3 7"/>
+<rect x="355" y="104" width="270" height="74" rx="12" fill="#6d4aff"/>
+<text x="490" y="134" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Gatherly UI</text>
+<text x="490" y="156" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">(browser)</text>
+<line x1="490" y1="178" x2="490" y2="1733" stroke="#d9d2c6" stroke-width="2" stroke-dasharray="3 7"/>
+<rect x="655" y="104" width="270" height="74" rx="12" fill="#ff6b4a"/>
+<text x="790" y="134" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Gatherly API</text>
+<text x="790" y="156" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">(agent loop)</text>
+<line x1="790" y1="178" x2="790" y2="1733" stroke="#d9d2c6" stroke-width="2" stroke-dasharray="3 7"/>
+<rect x="955" y="104" width="270" height="52" rx="12" fill="#c2410c"/>
+<text x="1090" y="134" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Gemini</text>
+<line x1="1090" y1="156" x2="1090" y2="1733" stroke="#d9d2c6" stroke-width="2" stroke-dasharray="3 7"/>
+<rect x="1255" y="104" width="270" height="52" rx="12" fill="#6d4aff"/>
+<text x="1390" y="134" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Qloo Taste AI</text>
+<line x1="1390" y1="156" x2="1390" y2="1733" stroke="#d9d2c6" stroke-width="2" stroke-dasharray="3 7"/>
+<rect x="1555" y="104" width="270" height="52" rx="12" fill="#14915f"/>
+<text x="1690" y="134" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Supabase</text>
+<line x1="1690" y1="156" x2="1690" y2="1733" stroke="#d9d2c6" stroke-width="2" stroke-dasharray="3 7"/>
+<line x1="200" y1="205" x2="480" y2="205" stroke="#1d1a24" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="193" y="178" width="454" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="340.0" y="193" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">1  Pick event type, city, budget; add each person's favorites</text>
+<line x1="500" y1="271" x2="780" y2="271" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)"/>
+<rect x="558" y="244" width="253" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="640.0" y="259" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">2  Typeahead: GET /api/suggest?q=…</text>
+<line x1="800" y1="337" x2="1380" y2="337" stroke="#6d4aff" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="1013" y="310" width="238" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="1090.0" y="325" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">3  /search (cached, 4 req/s max)</text>
+<line x1="1380" y1="403" x2="500" y2="403" stroke="#6d4aff" stroke-width="2.2" marker-end="url(#ahb)" stroke-dasharray="7 6"/>
+<rect x="773" y="376" width="514" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="391" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">4  Matching entities with images + tags  (a pick skips later lookups)</text>
+<line x1="200" y1="469" x2="480" y2="469" stroke="#1d1a24" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="258" y="442" width="253" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="340.0" y="457" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">5  Review and tap 'Plan our night'</text>
+<line x1="500" y1="535" x2="780" y2="535" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)"/>
+<rect x="522" y="508" width="365" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="640.0" y="523" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">6  POST /api/plan  (response is an NDJSON stream)</text>
+<line x1="800" y1="601" x2="1080" y2="601" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)"/>
+<rect x="822" y="574" width="365" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="589" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">7  System prompt + tool definitions + group brief</text>
+<line x1="1080" y1="667" x2="800" y2="667" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)" stroke-dasharray="7 6"/>
+<rect x="880" y="640" width="186" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="655" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">8  Calls resolve_entities</text>
+<line x1="800" y1="733" x2="1380" y2="733" stroke="#6d4aff" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="962" y="706" width="395" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="1090.0" y="721" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">9  /search for typed favorites; /v2/tags for cuisines</text>
+<line x1="1080" y1="799" x2="800" y2="799" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)" stroke-dasharray="7 6"/>
+<rect x="882" y="772" width="179" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="787" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">10  Calls compare_tastes</text>
+<line x1="800" y1="865" x2="1380" y2="865" stroke="#6d4aff" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="972" y="838" width="365" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="1090.0" y="853" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">11  /v2/analysis/compare, each person vs the rest</text>
+<line x1="780" y1="931" x2="500" y2="931" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)" stroke-dasharray="7 6"/>
+<rect x="536" y="904" width="320" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="640.0" y="919" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">12  Stream: overlap result + progress steps</text>
+<line x1="1080" y1="997" x2="800" y2="997" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)" stroke-dasharray="7 6"/>
+<rect x="773" y="970" width="514" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="985" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">13  Calls get_insights for venue, playlist, activity, film (parallel)</text>
+<line x1="800" y1="1063" x2="1380" y2="1063" stroke="#6d4aff" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="928" y="1036" width="499" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="1090.0" y="1051" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">14  /v2/insights: group + per person, with city, tag, price filters</text>
+<line x1="1380" y1="1129" x2="800" y2="1129" stroke="#6d4aff" stroke-width="2.2" marker-end="url(#ahb)" stroke-dasharray="7 6"/>
+<rect x="945" y="1102" width="447" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="1090.0" y="1117" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">15  Candidates; each ranked by members fitted + why-evidence</text>
+<line x1="1080" y1="1195" x2="800" y2="1195" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)" stroke-dasharray="7 6"/>
+<rect x="865" y="1168" width="231" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="1183" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">16  Calls build_plan(plan JSON)</text>
+<rect x="660" y="1237" width="260" height="48" rx="10" fill="#e9f7f0" stroke="#14915f" stroke-width="2"/>
+<text x="790" y="1259" font-size="14" font-weight="700" fill="#14915f" text-anchor="middle">17  Grounding validator</text>
+<text x="790" y="1277" font-size="12.5" font-weight="400" fill="#1d1a24" text-anchor="middle">IDs must be returned candidates</text>
+<line x1="800" y1="1327" x2="1080" y2="1327" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)"/>
+<rect x="788" y="1300" width="469" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="1315" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">18  If invalid: errors go back to Gemini to fix (max 2 retries)</text>
+<line x1="780" y1="1393" x2="500" y2="1393" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)" stroke-dasharray="7 6"/>
+<rect x="560" y="1366" width="246" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="640.0" y="1381" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">19  Stream: final plan + evidence</text>
+<line x1="480" y1="1459" x2="200" y2="1459" stroke="#1d1a24" stroke-width="2.2" marker-end="url(#ah)" stroke-dasharray="7 6"/>
+<rect x="222" y="1432" width="365" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="340.0" y="1447" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">20  Plan cards, overlap view, tradeoffs, confetti</text>
+<line x1="500" y1="1525" x2="780" y2="1525" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)"/>
+<rect x="529" y="1498" width="343" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="640.0" y="1513" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">21  In parallel: POST /api/baseline (Qloo off)</text>
+<line x1="800" y1="1591" x2="1080" y2="1591" stroke="#ff6b4a" stroke-width="2.2" marker-end="url(#aha)"/>
+<rect x="843" y="1564" width="298" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="940.0" y="1579" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">22  Plain Gemini, no tools, no grounding</text>
+<line x1="500" y1="1657" x2="1680" y2="1657" stroke="#14915f" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="974" y="1630" width="358" height="20" rx="6" fill="#fbf9f6" opacity="0.92"/>
+<text x="1090.0" y="1645" font-size="13.5" font-weight="600" fill="#1d1a24" text-anchor="middle">23  Signed in: upsert event (row-level security)</text>
+</svg>

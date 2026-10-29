@@ -30,6 +30,8 @@ export class RunContext {
   cuisineHints: Record<string, string[]> = {};
   candidates = new Map<string, Candidate>();
   overlap?: OverlapResult;
+  /** Lowercased taste-theme names per person (Qloo compare tags + their favorites' tags): used for match evidence. */
+  personThemes: Record<string, Set<string>> = {};
   constructor(
     readonly input: GroupInput,
     readonly qloo: QlooClient,
@@ -42,6 +44,9 @@ export class RunContext {
     return [...new Set(this.resolved.filter((r) => !person || r.personName === person).map((r) => r.entityId))];
   }
 }
+
+/** Tag names that say nothing about taste (venue type, price, etc.). */
+const GENERIC_THEME = /^(place|restaurant|food|popular|cafe|bar|casual|touristy|good for kids|delivery|takeout|outdoor seating|reservations|wi fi|credit cards)$/i;
 
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 const looseMatch = (a: string, b: string) => {
@@ -132,6 +137,10 @@ export async function compareTastes(ctx: RunContext) {
     );
     overlap = computeOverlap(tagsByPerson, "qloo-compare");
     if (!overlap.shared.length) throw new Error("empty");
+    for (const [name, tags] of Object.entries(tagsByPerson)) {
+      ctx.personThemes[name] ??= new Set();
+      for (const t of tags) ctx.personThemes[name].add(t.name.toLowerCase());
+    }
   } catch {
     overlap = computeOverlap(tagsFromEntities(ctx.resolved), "entity-tags");
   }
@@ -212,7 +221,7 @@ export async function getInsights(ctx: RunContext, part: Part, cuisine?: string)
   group.forEach((e) => add(e));
   perPerson.forEach((list, i) => list.forEach((e) => add(e, people[i])));
 
-  // Evidence: which of each fitting person's favorites share Qloo tags with this candidate.
+  // Evidence: favorites that share Qloo tags with the candidate, else the taste themes it shares with the person.
   for (const c of byId.values()) {
     const candTags = new Set(c.entity.tagIds);
     for (const person of c.fits) {
@@ -222,9 +231,13 @@ export async function getInsights(ctx: RunContext, part: Part, cuisine?: string)
         .filter((h) => h.shared.length)
         .sort((a, b) => b.shared.length - a.shared.length)
         .slice(0, 2);
+      const personThemes = new Set([...(ctx.personThemes[person] ?? []), ...ctx.resolved.filter((r) => r.personName === person).flatMap((r) => r.tags.map((t) => t.toLowerCase()))]);
+      const themes = [...new Set(c.entity.tags.filter((t) => !GENERIC_THEME.test(t) && personThemes.has(t.toLowerCase())))].slice(0, 4);
       c.evidence[person] = hits.length
         ? hits.map((h) => `${h.fav} → ${h.shared.slice(0, 3).join(", ")}`)
-        : [`Qloo ranks it high for ${person}'s overall taste profile`];
+        : themes.length
+          ? [`Shared taste themes: ${themes.join(", ")}`]
+          : [`Qloo ranks it high for ${person}'s overall taste profile`];
     }
   }
 
