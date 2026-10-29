@@ -2,7 +2,7 @@
 import { useSyncExternalStore } from "react";
 import type { GroupInput, OverlapResult, Plan } from "../schemas";
 
-/** Demo-grade profile: lives only in this browser. Gatherly has no accounts or server-side user data. */
+/** Lightweight profile: lives only in this browser. Gatherly has no accounts or server-side user data. */
 export interface User {
   name: string;
   email: string;

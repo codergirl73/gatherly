@@ -21,7 +21,7 @@ export default function EventsPage() {
           <div className="text-5xl" aria-hidden>🗓️</div>
           <h2 className="mt-4 font-display text-xl font-semibold">No events yet</h2>
           <p className="mt-1 text-muted">Plan your first one in about two minutes.</p>
-          <div className="mt-6 flex justify-center gap-3"><LinkButton href="/plan">Plan an event</LinkButton><LinkButton href="/#demo" variant="secondary">Try a demo group</LinkButton></div>
+          <div className="mt-6 flex justify-center gap-3"><LinkButton href="/plan">Plan an event</LinkButton><LinkButton href="/#examples" variant="secondary">Try an example group</LinkButton></div>
         </Card>
       ) : (
         <ul className="mt-8 flex flex-col gap-3">

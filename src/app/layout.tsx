@@ -8,6 +8,14 @@ const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], axes: ["opsz"] });
 
 export const metadata: Metadata = {
+  applicationName: "Gatherly",
+  openGraph: {
+    type: "website",
+    siteName: "Gatherly",
+    title: "Gatherly: plan events everyone will love",
+    description: "Find where your group's tastes overlap, then plan the venue, playlist and activity, with a reason behind every pick.",
+  },
+  twitter: { card: "summary", title: "Gatherly: plan events everyone will love" },
   title: { default: "Gatherly: plan events everyone will love", template: "%s · Gatherly" },
   description:
     "Gatherly uses Qloo's Taste AI to find where your group's tastes overlap, then plans the venue, playlist and activity everyone will enjoy.",

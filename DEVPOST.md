@@ -19,7 +19,7 @@ Gatherly never books or pays for anything, and labels hours, prices and availabi
 - **Qloo is the only source of recommendations.** `/search` resolves favorites; `/v2/analysis/compare` measures each person against the rest of the group; `/v2/insights` returns restaurants and activities in the chosen city (with cuisine tag and price-level filters), artists and films. We call insights once for the group and once per person, so each candidate is ranked by how many members it actually fits.
 - **Gemini on Vertex AI** runs a tool-use agent loop (`resolve_entities`, `compare_tastes`, `get_insights`, `build_plan`). It decides the order and writes the explanations.
 - **A grounding validator** checks the final plan: every pick must be an entity Qloo returned for that part of the event, and names and addresses are overwritten from Qloo data. Plans are validated with zod.
-- **A resilient Qloo client:** request queue (≤4 req/s), timeouts, exponential backoff on 429/5xx, in-memory cache and in-flight de-duplication, so repeated demo runs don't burn quota.
+- **A resilient Qloo client:** request queue (≤4 req/s), timeouts, exponential backoff on 429/5xx, in-memory cache and in-flight de-duplication, so repeated runs don't burn quota.
 - **Next.js + TypeScript + Tailwind**, streaming agent progress to the UI, responsive with light and dark modes. Unit tests cover the client, the overlap math and plan grounding; a live integration suite verifies city filtering against the real API.
 
 ## Challenges
@@ -31,7 +31,7 @@ Gatherly never books or pays for anything, and labels hours, prices and availabi
 ## Accomplishments we're proud of
 - Every recommendation is traceable to real Qloo data, and the UI shows the evidence.
 - The Qloo on/off comparison makes the value of Taste AI obvious in seconds.
-- A polished, responsive product experience, not just a demo script.
+- A polished, responsive product experience, not just a script.
 
 ## What we learned
 Taste data changes what an agent can do: instead of guessing, it can discover (artists nobody named but everyone would like) and explain. Grounding is best enforced in code, not just in the prompt. Verifying API behavior with live tests saves hours of debugging silent no-ops.

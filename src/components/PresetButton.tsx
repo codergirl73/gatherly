@@ -34,7 +34,7 @@ export function PresetCard({ preset }: { preset: Preset }) {
   );
 }
 
-export function DemoButton({ preset, children, className }: { preset: Preset; children: React.ReactNode; className: string }) {
+export function ExampleButton({ preset, children, className }: { preset: Preset; children: React.ReactNode; className: string }) {
   const router = useRouter();
   return (
     <button type="button" className={className} onClick={() => startRun(router, preset.group)}>

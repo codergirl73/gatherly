@@ -1,5 +1,5 @@
 import { LinkButton } from "@/components/ui";
-import { PresetCard, DemoButton } from "@/components/PresetButton";
+import { PresetCard, ExampleButton } from "@/components/PresetButton";
 import { PRESETS } from "@/lib/presets";
 import { Avatar } from "@/components/Avatar";
 
@@ -17,7 +17,7 @@ const features = [
 ];
 
 export default function Home() {
-  const demo = PRESETS[0];
+  const example = PRESETS[0];
   return (
     <>
       <section className="bg-hero">
@@ -33,12 +33,12 @@ export default function Home() {
               Gatherly finds where your group&apos;s tastes overlap, then plans the venue, playlist and activity, with a reason behind every pick.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <DemoButton preset={demo} className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-base font-semibold text-brand-fg shadow-sm transition hover:opacity-90">
-                ✨ Try a demo group
-              </DemoButton>
+              <ExampleButton preset={example} className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-base font-semibold text-brand-fg shadow-sm transition hover:opacity-90">
+                ✨ Try an example group
+              </ExampleButton>
               <LinkButton href="/plan" variant="secondary" size="lg">Plan your own event</LinkButton>
             </div>
-            <p className="mt-4 text-sm text-muted">No sign-up needed. Demo groups are synthetic people.</p>
+            <p className="mt-4 text-sm text-muted">No sign-up needed. Example groups are made-up people.</p>
           </div>
 
           <div className="rise relative" style={{ animationDelay: "120ms" }} aria-hidden>
@@ -79,9 +79,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="demo" className="border-y border-border bg-surface-2/50">
+      <section id="examples" className="border-y border-border bg-surface-2/50">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="font-display text-3xl font-semibold tracking-tight">Try a demo group</h2>
+          <h2 className="font-display text-3xl font-semibold tracking-tight">Try an example group</h2>
           <p className="mt-2 max-w-2xl text-muted">One click runs the full agent on a synthetic group. It takes about a minute, and you can watch each step.</p>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {PRESETS.map((p) => <PresetCard key={p.id} preset={p} />)}

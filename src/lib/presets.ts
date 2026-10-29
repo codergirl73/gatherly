@@ -1,6 +1,6 @@
 import type { GroupInput } from "./schemas";
 
-/** Synthetic demo groups only. No real people's data. */
+/** Synthetic example groups only. No real people's data. */
 export interface Preset {
   id: string;
   label: string;

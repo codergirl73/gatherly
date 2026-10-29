@@ -20,12 +20,12 @@ export function Footer() {
           <div className="flex flex-col gap-2">
             <span className="font-semibold">Good to know</span>
             <span className="max-w-52 text-muted">
-              Demo profiles are synthetic. Gatherly never books or pays for anything. Check hours and prices before you book.
+              Example profiles are made up. Gatherly never books or pays for anything. Check hours and prices before you book.
             </span>
           </div>
         </div>
       </div>
-      <div className="border-t border-border py-4 text-center text-xs text-muted">Built for the Qloo Agentic Hackathon · MIT licensed</div>
+      <div className="border-t border-border py-4 text-center text-xs text-muted">© 2026 Gatherly · Taste data by Qloo</div>
     </footer>
   );
 }

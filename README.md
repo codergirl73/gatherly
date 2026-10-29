@@ -2,15 +2,15 @@
 
 **An AI agent that plans group events everyone will enjoy, powered by [Qloo](https://qloo.com)'s Taste AI.**
 
-> Live demo: _add the Vercel URL here after deploy_
+> Live app: _add the Vercel URL here after deploy_
 
 Gatherly takes a group of 3–6 people (each sharing a few favorite films, shows, artists, restaurants, places, brands or books), finds where their tastes overlap and where they differ, and plans the event: **venue and cuisine, a theme, a playlist, an activity and a film**. Every pick explains *whose favorites it connects to*. When tastes clash, Gatherly flags the tradeoff and offers a balanced alternative.
 
-Built for the Qloo Agentic Hackathon. All demo people are synthetic.
+Built for the Qloo Agentic Hackathon. All example people are synthetic.
 
 ## Judge's guide (60 seconds)
 
-1. Open the live demo and click **Try a demo group** (or pick a preset card: New York tech team, London birthday, Lisbon remote offsite).
+1. Open the live app and click **Try an example group** (or pick a preset card: New York tech team, London birthday, Lisbon remote offsite).
 2. Watch the agent's steps stream in ("Matching Priya's favorites…", "Finding restaurants in New York…"). It takes about 40–60 seconds.
 3. Read the **taste overlap** section: group overlap score, themes shared by the group, each person's unique themes and a pairwise similarity grid.
 4. Scroll the plan cards. Open **"Why Qloo matched this"** on any pick to see the favorites and tags behind it.
@@ -76,7 +76,7 @@ flowchart LR
 - **Qloo client** (`src/lib/qloo/client.ts`): request queue (max 4 starts/second), per-request timeout, exponential backoff on 429/5xx honoring `Retry-After`, in-memory cache plus in-flight de-duplication. The API key is only ever used server-side.
 - **Agent** (`src/lib/agent/`): Gemini function-calling loop with four tools (`resolve_entities`, `compare_tastes`, `get_insights`, `build_plan`). Progress events stream to the UI as the tools run.
 - **Plan JSON** is validated with zod (`src/lib/schemas.ts`) and grounded before the UI sees it.
-- **"Login"** is a demo-grade local profile (name + email kept in `localStorage`). There are no accounts, passwords or server-side user data.
+- **"Login"** is a lightweight local profile (name + email kept in `localStorage`). There are no accounts, passwords or server-side user data.
 
 ## Setup
 
