@@ -54,6 +54,10 @@ The legacy `/recs` and `/recommendations` endpoints are not used.
 
 ## Architecture
 
+![Gatherly architecture](docs/diagrams/architecture.png)
+
+More detail, including the swimlane from favorites to a grounded plan, is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). The same flow as a Mermaid diagram:
+
 ```mermaid
 flowchart LR
   U[Browser<br/>Next.js UI] -- POST group --> P[/api/plan<br/>streams NDJSON/]
