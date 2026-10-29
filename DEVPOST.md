@@ -14,6 +14,10 @@ Asking an LLM does not fix that. It returns confident, generic suggestions with 
 
 We wanted an agent that treats **taste as data**, so that five different people each get a voice and every suggestion can show its work. Qloo's taste graph is what makes that possible: it knows how artists, films, restaurants, places and brands relate to one another across hundreds of millions of entities, and it can filter by place. That is exactly what a group planner needs and what a language model alone cannot provide.
 
+![Gatherly's landing page: five different tastes gathering around one plan](https://raw.githubusercontent.com/codergirl73/gatherly/master/docs/images/landing.jpg)
+
+*Gatherly's landing page: five different tastes, gathering around one plan.*
+
 ## What it does
 
 You describe the night (a team social, birthday, offsite or friends' night out), the city, the spend level, and anything that must be respected, like "vegetarian" or "step-free access". Then you add 3–6 people and tell Gatherly what each one loves. A search-as-you-type box over Qloo finds films, shows, artists, restaurants, places, brands and books, with posters and tags.
