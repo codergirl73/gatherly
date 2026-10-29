@@ -23,4 +23,4 @@ export function getGemini(): GoogleGenAI {
   return client;
 }
 
-export const geminiModel = () => process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
+export const geminiModel = () => process.env.GEMINI_MODEL ?? "gemini-3.5-flash";

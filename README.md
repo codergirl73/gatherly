@@ -98,7 +98,7 @@ Environment variables (see `.env.example`):
 | `GEMINI_API_KEY` | Simplest option: a Gemini API key from Google AI Studio. If set, Vertex AI settings below are ignored. |
 | `GOOGLE_CLOUD_PROJECT` | Vertex AI option: GCP project with Vertex AI enabled and billing on. |
 | `GOOGLE_CLOUD_LOCATION` | Vertex region (default `us-central1`). |
-| `GEMINI_MODEL` | Model id (default `gemini-2.5-flash`). |
+| `GEMINI_MODEL` | Model id (default `gemini-3.5-flash`). |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project for accounts and saved events. Blank = guest mode. |
 | `NEXT_PUBLIC_AUTH_GOOGLE` | Set to `1` once the Google provider is enabled in Supabase. |
 | `GOOGLE_SERVICE_ACCOUNT_JSON_B64` | Hosted deploys only: base64 of a service-account JSON with the *Vertex AI User* role. |
