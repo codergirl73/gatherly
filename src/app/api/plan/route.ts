@@ -16,6 +16,7 @@ const errorEvent = (e: unknown): AgentEvent => {
   const msg = e instanceof Error ? e.message : "";
   if (/GOOGLE_CLOUD_PROJECT|credential|permission|PERMISSION_DENIED|UNAUTHENTICATED/i.test(msg))
     return { type: "error", kind: "config", message: "The planning model isn't configured correctly on this server." };
+  if (/503|UNAVAILABLE|DEADLINE_EXCEEDED|high demand|overloaded/i.test(msg)) return { type: "error", kind: "unavailable", message: "The planning model is very busy right now. Please try again in a moment." };
   if (/429|RESOURCE_EXHAUSTED|quota/i.test(msg)) return { type: "error", kind: "rate_limited", message: "The planner is busy right now. Try again in a minute." };
   return { type: "error", kind: "unknown", message: "Something went wrong while planning. Please try again." };
 };

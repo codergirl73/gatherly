@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { Content, FunctionDeclaration, Part as GPart } from "@google/genai";
-import { getGemini, geminiModel } from "./gemini";
+import { generateWithRetry } from "./gemini";
 import { agentSystemPrompt } from "./prompts";
 import { groundPlan } from "./grounding";
 import { RunContext, compareTastes, getInsights, resolveEntities, type Part } from "./tools";
@@ -54,13 +54,11 @@ export interface RunOptions {
 /** The Qloo-grounded agent loop: Gemini decides tool order; tools hit Qloo; build_plan is validated and grounded. */
 export async function runAgent({ input, qloo, emit, maxTurns = 9 }: RunOptions) {
   const ctx = new RunContext(input, qloo, emit);
-  const ai = getGemini();
   const contents: Content[] = [{ role: "user", parts: [{ text: "Plan the event. Start now." }] }];
   let planRetries = 0;
 
   for (let turn = 0; turn < maxTurns; turn++) {
-    const res = await ai.models.generateContent({
-      model: geminiModel(),
+    const res = await generateWithRetry({
       contents,
       config: {
         systemInstruction: agentSystemPrompt(input),

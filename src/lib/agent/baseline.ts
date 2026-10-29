@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getGemini, geminiModel } from "./gemini";
+import { generateWithRetry } from "./gemini";
 import { baselineSystemPrompt } from "./prompts";
 import { planSchema, type GroupInput, type Plan } from "../schemas";
 
@@ -7,8 +7,7 @@ import { planSchema, type GroupInput, type Plan } from "../schemas";
 export async function runBaseline(input: GroupInput): Promise<Plan> {
   const { $schema: _s, ...schema } = z.toJSONSchema(planSchema, { io: "input" }) as Record<string, unknown>;
   void _s;
-  const res = await getGemini().models.generateContent({
-    model: geminiModel(),
+  const res = await generateWithRetry({
     contents: "Plan the event.",
     config: {
       systemInstruction: baselineSystemPrompt(input),
