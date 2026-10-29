@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { newRunId, saveRun } from "@/lib/client/store";
 import type { Preset } from "@/lib/presets";
 import { AvatarStack } from "./Avatar";
+import { Tilt } from "./Tilt";
 
 export function startRun(router: { push: (p: string) => void }, input: Preset["group"]) {
   const id = newRunId();
@@ -13,10 +14,11 @@ export function startRun(router: { push: (p: string) => void }, input: Preset["g
 export function PresetCard({ preset }: { preset: Preset }) {
   const router = useRouter();
   return (
+    <Tilt className="h-full rounded-2xl">
     <button
       type="button"
       onClick={() => startRun(router, preset.group)}
-      className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-surface p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-brand hover:shadow-md"
+      className="group flex h-full w-full flex-col gap-3 rounded-2xl border border-border bg-surface p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-brand hover:shadow-md"
     >
       <div className="flex items-center justify-between">
         <span className="text-3xl" aria-hidden>{preset.emoji}</span>
@@ -31,6 +33,7 @@ export function PresetCard({ preset }: { preset: Preset }) {
         <span className="text-sm font-semibold text-brand transition group-hover:translate-x-0.5">Plan this →</span>
       </div>
     </button>
+    </Tilt>
   );
 }
 

@@ -30,6 +30,7 @@ export interface QlooEntity {
   region?: string;
   country?: string;
   description?: string;
+  image?: string;
   priceLevel?: number;
   tags: string[];
   /** Qloo tag ids (e.g. urn:tag:genre:music:indie), used for taste-overlap math. */

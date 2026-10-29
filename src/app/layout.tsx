@@ -3,6 +3,7 @@ import { Fraunces, Geist } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { AmbientScene } from "@/components/AmbientScene";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], axes: ["opsz"] });
@@ -41,9 +42,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-brand focus:px-3 focus:py-2 focus:text-brand-fg">
           Skip to content
         </a>
+        <AmbientScene />
         <Navbar />
-        <main id="main" className="flex-1">{children}</main>
-        <Footer />
+        <main id="main" className="relative z-10 flex-1">{children}</main>
+        <div className="relative z-10"><Footer /></div>
       </body>
     </html>
   );

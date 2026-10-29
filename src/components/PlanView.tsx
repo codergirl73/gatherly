@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Plan } from "@/lib/schemas";
 import { AvatarStack } from "./Avatar";
 import { Badge, Card } from "./ui";
+import { Tilt } from "./Tilt";
 
 interface Props {
   plan: Plan;
@@ -134,11 +135,13 @@ export function AtAGlance({ plan }: { plan: Plan }) {
     <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Plan at a glance">
       {tiles.map((t) => (
         <li key={t.id}>
+          <Tilt className="h-full rounded-2xl">
           <a href={`#${t.id}`} className="group flex h-full flex-col gap-1 rounded-2xl border border-border bg-surface p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-brand hover:shadow-md">
             <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted"><span aria-hidden>{t.icon}</span>{t.label}</span>
             <span className="font-display text-lg font-semibold leading-snug">{t.value}</span>
             {t.sub && <span className="line-clamp-1 text-sm text-muted">{t.sub}</span>}
           </a>
+          </Tilt>
         </li>
       ))}
     </ul>

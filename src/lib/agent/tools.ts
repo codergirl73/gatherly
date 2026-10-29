@@ -57,6 +57,21 @@ export async function resolveEntities(ctx: RunContext) {
       ctx.emit({ type: "step", message: `Matching ${person.name}'s favorites…` });
       await Promise.all(
         person.favorites.map(async (fav) => {
+          if (fav.entityId) {
+            // Picked from Qloo's own suggestions in the builder: already resolved, no lookup needed.
+            ctx.resolved.push({
+              personName: person.name,
+              inputName: fav.name,
+              category: fav.category,
+              entityId: fav.entityId,
+              name: fav.name,
+              matchedName: fav.name,
+              uncertain: false,
+              tags: (fav.tags ?? []).map((t) => t.name),
+              tagIds: (fav.tags ?? []).map((t) => t.id),
+            });
+            return;
+          }
           try {
             const results = await ctx.qloo.search(fav.name, { types: CATEGORY_TYPE[fav.category], take: 3 });
             const top = results.find((r) => looseMatch(r.name, fav.name)) ?? results[0];

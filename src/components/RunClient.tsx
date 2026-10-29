@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { patchRun, useRun, type Run } from "@/lib/client/store";
 import { useUser } from "@/lib/client/auth";
 import type { AgentEvent } from "@/lib/schemas";
+import { celebrate } from "@/lib/client/celebrate";
 import { ProgressView } from "./ProgressView";
 import { OverlapViz } from "./OverlapViz";
 import { AtAGlance, PlanView, planToText } from "./PlanView";
@@ -60,7 +61,7 @@ export function RunClient({ id }: { id: string }) {
         if (ev.type === "step") { steps.push(ev.message); patchRun(id, { steps: [...steps] }); }
         else if (ev.type === "warning") { warnings.push(ev.message); patchRun(id, { warnings: [...warnings] }); }
         else if (ev.type === "overlap") patchRun(id, { overlap: ev.overlap });
-        else if (ev.type === "plan") { gotPlan = true; patchRun(id, { status: "done", plan: ev.plan, evidence: ev.evidence }); }
+        else if (ev.type === "plan") { gotPlan = true; patchRun(id, { status: "done", plan: ev.plan, evidence: ev.evidence }); celebrate(); }
         else if (ev.type === "error") { patchRun(id, { status: "error", error: { kind: ev.kind, message: ev.message } }); gotPlan = true; }
       }
       if (!gotPlan) patchRun(id, { status: "error", error: { kind: "unavailable", message: "The connection dropped before the plan was ready." } });

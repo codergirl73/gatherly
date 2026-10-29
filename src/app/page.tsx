@@ -2,6 +2,7 @@ import { LinkButton } from "@/components/ui";
 import { PresetCard, ExampleButton } from "@/components/PresetButton";
 import { PRESETS } from "@/lib/presets";
 import { Gather3D } from "@/components/Gather3D";
+import { Tilt } from "@/components/Tilt";
 
 const steps = [
   { n: "1", t: "Tell us who's coming", d: "Add 3–6 people, a city and a budget. Everyone shares a few favorites: films, artists, restaurants, places." },
@@ -69,11 +70,13 @@ export default function Home() {
         <h2 className="font-display text-3xl font-semibold tracking-tight">How it works</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {steps.map((s) => (
-            <div key={s.n} className="rounded-2xl border border-border bg-surface p-6">
-              <div className="grid size-9 place-items-center rounded-full bg-brand text-sm font-bold text-brand-fg">{s.n}</div>
-              <h3 className="mt-4 text-lg font-semibold">{s.t}</h3>
-              <p className="mt-2 text-sm text-muted">{s.d}</p>
-            </div>
+            <Tilt key={s.n} className="rounded-2xl">
+              <div className="h-full rounded-2xl border border-border bg-surface p-6">
+                <div className="grid size-9 place-items-center rounded-full bg-brand text-sm font-bold text-brand-fg">{s.n}</div>
+                <h3 className="mt-4 text-lg font-semibold">{s.t}</h3>
+                <p className="mt-2 text-sm text-muted">{s.d}</p>
+              </div>
+            </Tilt>
           ))}
         </div>
       </section>
@@ -93,10 +96,12 @@ export default function Home() {
         <p className="mt-2 max-w-2xl text-muted">An LLM alone guesses at venues and music. Gatherly asks Qloo, a taste database built on real cultural and behavioral data, and only plans with what comes back.</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           {features.map((f) => (
-            <div key={f.t} className="rounded-2xl border border-border bg-surface p-6">
-              <h3 className="text-lg font-semibold">{f.t}</h3>
-              <p className="mt-2 text-sm text-muted">{f.d}</p>
-            </div>
+            <Tilt key={f.t} className="rounded-2xl">
+              <div className="h-full rounded-2xl border border-border bg-surface p-6">
+                <h3 className="text-lg font-semibold">{f.t}</h3>
+                <p className="mt-2 text-sm text-muted">{f.d}</p>
+              </div>
+            </Tilt>
           ))}
         </div>
         <div className="mt-16">

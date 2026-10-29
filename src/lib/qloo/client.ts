@@ -214,6 +214,7 @@ export function extractEntities(raw: unknown): QlooEntity[] {
         region: geo.admin1_region,
         country: geo.country_code,
         description: props.short_description ?? props.description,
+        image: typeof props.image?.url === "string" ? props.image.url : undefined,
         priceLevel: typeof props.price_level === "number" ? props.price_level : undefined,
         tags: Array.isArray(e.tags) ? e.tags.map((t: any) => t?.name).filter(Boolean) : [],
         tagIds: Array.isArray(e.tags) ? e.tags.map((t: any) => t?.tag_id ?? t?.value).filter(Boolean) : [],

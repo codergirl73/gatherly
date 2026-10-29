@@ -16,6 +16,10 @@ export const CATEGORY_LABELS: Record<Category, string> = {
 export const favoriteSchema = z.object({
   name: z.string().trim().min(1).max(80),
   category: z.enum(CATEGORIES),
+  /** Set when the favorite was picked from Qloo's search suggestions: skips a second lookup. */
+  entityId: z.string().regex(/^[0-9A-Fa-f-]{36}$/).optional(),
+  image: z.string().url().max(300).optional(),
+  tags: z.array(z.object({ id: z.string().max(120), name: z.string().max(60) })).max(12).optional(),
 });
 
 export const personSchema = z.object({
