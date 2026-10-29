@@ -2,9 +2,14 @@ import { GoogleGenAI } from "@google/genai";
 
 let client: GoogleGenAI | undefined;
 
-/** Gemini on Vertex AI. Local dev uses gcloud ADC; Vercel uses a base64 service-account JSON. */
+/**
+ * Gemini client. Uses a Gemini API key (Google AI Studio) when GEMINI_API_KEY is set;
+ * otherwise Vertex AI (local dev uses gcloud ADC; hosted deploys use a base64 service-account JSON).
+ */
 export function getGemini(): GoogleGenAI {
   if (client) return client;
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (apiKey) return (client = new GoogleGenAI({ apiKey }));
   const project = process.env.GOOGLE_CLOUD_PROJECT;
   if (!project) throw new Error("GOOGLE_CLOUD_PROJECT is not configured");
   const b64 = process.env.GOOGLE_SERVICE_ACCOUNT_JSON_B64;

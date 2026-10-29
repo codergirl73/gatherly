@@ -80,7 +80,7 @@ flowchart LR
 
 ## Setup
 
-Requirements: Node 20+, a Qloo hackathon API key, and a Google Cloud project with Vertex AI enabled.
+Requirements: Node 20+, a Qloo hackathon API key, and either a Gemini API key (Google AI Studio) or a Google Cloud project with Vertex AI enabled.
 
 ```bash
 git clone <this repo> && cd gatherly
@@ -95,7 +95,8 @@ Environment variables (see `.env.example`):
 | Variable | Purpose |
 |---|---|
 | `QLOO_API_KEY` | Qloo hackathon key. Works only against `https://hackathon.api.qloo.com`. |
-| `GOOGLE_CLOUD_PROJECT` | GCP project with Vertex AI. |
+| `GEMINI_API_KEY` | Simplest option: a Gemini API key from Google AI Studio. If set, Vertex AI settings below are ignored. |
+| `GOOGLE_CLOUD_PROJECT` | Vertex AI option: GCP project with Vertex AI enabled and billing on. |
 | `GOOGLE_CLOUD_LOCATION` | Vertex region (default `us-central1`). |
 | `GEMINI_MODEL` | Model id (default `gemini-2.5-flash`). |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project for accounts and saved events. Blank = guest mode. |
