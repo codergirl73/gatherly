@@ -59,7 +59,7 @@ export default function LoginPage() {
           <div className="my-5 flex items-center gap-3 text-xs text-muted"><span className="h-px flex-1 bg-border" />or<span className="h-px flex-1 bg-border" /></div>
           <Button variant="secondary" className="w-full" onClick={() => router.push("/plan")}>Continue as guest</Button>
           <p className="mt-5 rounded-xl bg-surface-2 p-3 text-xs text-muted">
-            <strong className="text-fg">Private by design.</strong> Gatherly doesn't use passwords. Your name and saved events stay on this device, and we don't store them on our servers.
+            <strong className="text-fg">Private by design.</strong> Gatherly doesn&apos;t use passwords. Your name and saved events stay on this device, and we don&apos;t store them on our servers.
           </p>
         </Card>
       </div>
