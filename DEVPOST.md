@@ -8,7 +8,7 @@ Copy each section into the matching Devpost field. The image gallery order and c
 Gatherly
 
 ## Tagline (one line)
-Plan the night everyone will actually enjoy: Qloo finds where a group's tastes overlap, an AI agent plans around it.
+An agent with taste: plan the night everyone will actually enjoy, grounded in Qloo's taste graph.
 
 ## Links
 - Live app: https://gatherly-omega-eight.vercel.app
@@ -22,7 +22,7 @@ Every group plan ends the same way: someone picks a place, someone else quietly 
 
 Asking an LLM does not fix that. It returns confident, generic suggestions with no data behind them, usually the most famous venues and artists it has seen, and sometimes places that do not exist. We wanted an agent that treats **taste as data**, so that a group of five different people each gets a voice, and every suggestion can show its work.
 
-Qloo's Taste AI was the missing piece. It knows how entities (artists, films, restaurants, places, brands) relate to each other across millions of people's behavior, and it can filter by place. That is exactly what a group planner needs and what a language model alone cannot provide.
+Agents are culturally blind: they can reason, plan and execute, but ask what a group of real people will love and they guess. Qloo's taste graph, with hundreds of millions of entities across music, film, dining and places, is the missing piece. It knows how artists, films, restaurants, places and brands relate to one another, and it can filter by place. That is exactly what a group planner needs and what a language model alone cannot provide.
 
 ## What it does
 You describe the night: event type (team social, birthday, offsite, friends night out), city, budget, and any explicit constraints (vegetarian, step-free access, no alcohol). Then you add 3–6 people and tell Gatherly what each person loves. A search-as-you-type box over Qloo finds films, shows, artists, restaurants, places, brands and books, with posters and tags, so nothing is mis-typed.
@@ -38,6 +38,13 @@ Gatherly then runs an agent that:
 Gatherly never books or pays for anything. Hours, prices and availability are labeled "check before booking". Dietary, accessibility and budget needs come only from what the organizer types; they are never inferred from taste.
 
 Accounts are real (Supabase): sign up with a name and avatar color, sign in with a password or a one-time email link, and your plans are saved to your account and reopen on any device. Guests can plan too; their events stay on the device.
+
+## Why this only works because of Qloo
+If you removed Qloo, Gatherly could not do its job. Each of these needs the taste graph:
+- **Real venues in the right city, ranked by group fit.** Qloo returns places in the chosen city and tells us which of the five people each one fits. An LLM can name famous restaurants; it cannot tell you that this one fits four of your five friends.
+- **Discovery, not repetition.** The LLM-only plan tends to recycle the group's own favorites (in our runs it kept suggesting the artists people had just typed). Qloo returns artists nobody named but several people would like, such as an experimental hip-hop artist for an indie fan and a film-score fan.
+- **Cross-domain taste.** A person's films, shows, artists and restaurants all become signals for places and activities they have never heard of.
+- **Evidence you can check.** Each pick cites the shared taste themes or favorites that connect it to each person, taken from Qloo's data. The Qloo on/off view makes the gap visible: in one live run, 7 of 7 picks traced to real Qloo data versus 0 of 8 for the LLM-only plan, and the LLM plan added unverifiable claims (for example step-free access) that Gatherly refuses to make.
 
 ## How we built it
 
@@ -112,7 +119,7 @@ Four Qloo endpoints do real work: `/search` (typeahead and entity resolution), `
 Landing page, accounts (password and email link), a three-step builder with live search, a streamed progress view, a taste-overlap visualization, evidence-backed plan cards, My events, error and empty states, light and dark mode, and a layout that works on phones.
 
 **Potential impact: a credible case for a real problem and a real audience?**
-Group planning is a real, recurring chore for team leads and people-ops running socials and offsites, for remote teams meeting in person, and for friends organizing birthdays. Today it is solved by guesswork or a group chat that ends with the loudest voice winning. Gatherly gives every member a voice, flags tradeoffs honestly, respects explicit constraints (dietary, access, budget) and never books or pays for anything on its own.
+Group planning is a real, recurring chore for team leads and people-ops running socials and offsites, for remote teams meeting in person, for friends organizing birthdays, and for anyone organizing a night out that has to work for more than one taste. Today it is solved by guesswork or a group chat that ends with the loudest voice winning. Gatherly gives every member a voice, flags tradeoffs honestly, respects explicit constraints (dietary, access, budget) and never books or pays for anything on its own.
 
 **Quality of the idea: a creative, non-obvious use of Qloo?**
 Qloo is used for *group* taste, not individual recommendation: it compares people against each other to find shared and unique taste, and it transfers taste across domains. Someone's favorite films, artists and restaurants all become signals that point to a city venue they have never heard of. The Qloo on/off view makes the difference visible, and the grounding rule means the agent can only recommend what Qloo actually returned.
@@ -166,7 +173,7 @@ Folder: `/Users/sandy/Hackathon/gatherly-devpost-assets/`
 
 Use image 1 as the thumbnail.
 
-## Walkthrough video script (about 90 seconds)
+## Optional walkthrough video script (about 90 seconds; a video is not required by the rules)
 1. **0:00** On the landing page: "Planning for a group means someone always loses. Gatherly plans the night everyone will actually enjoy, powered by Qloo's Taste AI."
 2. **0:10** Click **Plan your own event**. Choose a type, a city and a spend level; tick a dietary need.
 3. **0:25** On the crew step, search "radiohead" and add it; add two more. "Search runs on Qloo, so every favorite is a real entity."
