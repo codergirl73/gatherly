@@ -31,7 +31,7 @@ export function Navbar() {
             <div className="relative hidden md:block">
               <button type="button" onClick={() => setMenu((m) => !m)} aria-haspopup="menu" aria-expanded={menu}
                 className="flex items-center gap-2 rounded-full border border-border bg-surface py-1 pl-1 pr-3 transition hover:bg-surface-2">
-                <Avatar name={user.name} size={28} />
+                <Avatar name={user.name} size={28} color={user.color} />
                 <span className="max-w-28 truncate text-sm font-medium">{user.name}</span>
               </button>
               {menu && (

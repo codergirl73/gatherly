@@ -9,8 +9,12 @@ const PEOPLE = ["#ff6b4a", "#6d4aff", "#14915f", "#d6409f", "#0e7ad6"];
  * center (two interlocking rings, the logo) and the group "locks in". Pointer moves tilt the scene.
  * Falls back to the 2D taste map when WebGL is unavailable or the user prefers reduced motion.
  */
-export function Gather3D({ className = "", names }: { className?: string; names: string[] }) {
+export function Gather3D({ className = "", names, youColor }: { className?: string; names: string[]; youColor?: string }) {
   const mount = useRef<HTMLDivElement>(null);
+  const you = useRef<string | undefined>(youColor);
+  useEffect(() => {
+    you.current = youColor;
+  }, [youColor]);
   const [fallback, setFallback] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -80,6 +84,16 @@ export function Gather3D({ className = "", names }: { className?: string; names:
           return { mesh, line, phase: (i / n) * Math.PI * 2, wobble: Math.random() * 6 };
         });
 
+        // "You": a bigger sphere that joins the group once a color is chosen (sign-up).
+        const youMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.12, metalness: 0.1, clearcoat: 1, emissive: 0xffffff, emissiveIntensity: 0.25 });
+        const youMesh = new THREE.Mesh(new THREE.SphereGeometry(0.46, 48, 48), youMat);
+        const youHalo = new THREE.Mesh(new THREE.TorusGeometry(0.72, 0.025, 16, 80), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 }));
+        youMesh.scale.setScalar(0.001);
+        youHalo.scale.setScalar(0.001);
+        world.add(youMesh, youHalo);
+        let youScale = 0;
+        const youTarget = new THREE.Color();
+
         // Shared "taste themes": small drifting crystals.
         const crystalGeo = new THREE.OctahedronGeometry(0.1);
         const crystals = Array.from({ length: 16 }, (_, i) => {
@@ -136,6 +150,21 @@ export function Gather3D({ className = "", names }: { className?: string; names:
             (p.line.material as import("three").LineBasicMaterial).opacity = 0.2 + g * 0.6;
             void i;
           });
+
+          const hasYou = !!you.current;
+          if (hasYou) {
+            youTarget.set(you.current!);
+            youMat.color.lerp(youTarget, 0.2);
+            youMat.emissive.lerp(youTarget, 0.2);
+            (youHalo.material as import("three").MeshBasicMaterial).color.lerp(youTarget, 0.2);
+          }
+          youScale += ((hasYou ? 1 : 0) - youScale) * 0.1;
+          const ya = t * 0.5 + 0.7;
+          youMesh.position.set(Math.cos(ya) * (radius * 0.55), 0.9 + Math.sin(t * 1.3) * 0.12, Math.sin(ya) * radius * 0.4);
+          youMesh.scale.setScalar(Math.max(0.001, youScale * (1 + g * 0.1)));
+          youHalo.position.copy(youMesh.position);
+          youHalo.rotation.x = Math.PI / 2 + Math.sin(t) * 0.3;
+          youHalo.scale.setScalar(Math.max(0.001, youScale * (1.1 + Math.sin(t * 2) * 0.06)));
 
           core.rotation.y = t * 0.6;
           core.rotation.x = Math.sin(t * 0.5) * 0.25;

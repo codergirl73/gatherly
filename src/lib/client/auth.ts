@@ -8,6 +8,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  /** Avatar color chosen at sign-up. */
+  color?: string;
 }
 
 interface AuthState {
@@ -26,7 +28,7 @@ const toUser = (s: Session | null): User | null => {
   if (!u) return null;
   const email = u.email ?? "";
   const name = (u.user_metadata?.name as string | undefined)?.trim() || email.split("@")[0] || "You";
-  return { id: u.id, name, email };
+  return { id: u.id, name, email, color: (u.user_metadata?.color as string | undefined) || undefined };
 };
 
 const set = (next: AuthState) => {
@@ -76,13 +78,13 @@ const friendly = (message: string): string => {
 
 const noAccounts: Result = { ok: false, message: "Accounts aren't available right now. You can continue as a guest." };
 
-export async function signUp(name: string, email: string, password: string): Promise<Result> {
+export async function signUp(name: string, email: string, password: string, color?: string): Promise<Result> {
   const sb = getSupabase();
   if (!sb) return noAccounts;
   const { data, error } = await sb.auth.signUp({
     email,
     password,
-    options: { data: { name }, emailRedirectTo: `${location.origin}/plan` },
+    options: { data: { name, color }, emailRedirectTo: `${location.origin}/plan` },
   });
   if (error) return { ok: false, message: friendly(error.message) };
   // Supabase returns an empty identities list for an already-registered email (no error, to avoid leaking accounts).
@@ -94,6 +96,14 @@ export async function signInWithPassword(email: string, password: string): Promi
   const sb = getSupabase();
   if (!sb) return noAccounts;
   const { error } = await sb.auth.signInWithPassword({ email, password });
+  return error ? { ok: false, message: friendly(error.message) } : { ok: true };
+}
+
+/** Passwordless sign-in: emails a one-time link (works for existing accounts; new emails get an account). */
+export async function sendMagicLink(email: string): Promise<Result> {
+  const sb = getSupabase();
+  if (!sb) return noAccounts;
+  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: `${location.origin}/plan` } });
   return error ? { ok: false, message: friendly(error.message) } : { ok: true };
 }
 
