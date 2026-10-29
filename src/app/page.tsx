@@ -9,6 +9,14 @@ const steps = [
   { n: "3", t: "Get a plan with reasons", d: "Venue, theme, playlist, activity and film. Each pick explains whose favorites it connects to, with tradeoffs flagged." },
 ];
 
+const faqs = [
+  { q: "How does Gatherly choose?", a: "It matches everyone's favorites to Qloo's Taste AI, measures where the group overlaps, then asks Qloo for venues, artists and films ranked by how many people each one fits. An AI writes the explanation, but can only recommend what Qloo returned." },
+  { q: "Does Gatherly book or pay for anything?", a: "No. It suggests; you decide and book. Hours, prices and availability aren't checked, so confirm them with the venue first." },
+  { q: "How are dietary needs and budget handled?", a: "Only from what you enter. Gatherly never guesses dietary or accessibility needs from taste. Budget filters restaurant price level, and your constraints are flagged for you to confirm with the venue." },
+  { q: "What happens to our data?", a: "Favorites you enter are sent to Qloo and to Google's Gemini model to build the plan. Guests' events stay on their device. If you sign in, events are saved to your account so you can reopen them anywhere." },
+  { q: "Why does planning take about a minute?", a: "Gatherly makes dozens of lookups (one per person for every part of the event) so each pick is genuinely ranked by group fit." },
+];
+
 const features = [
   { t: "Grounded, never invented", d: "Every venue, artist and film comes straight from Qloo. We reject any pick the model can't trace back to real data." },
   { t: "Overlap you can see", d: "A taste map shows what the whole group shares, what pairs share and what's uniquely yours." },
@@ -99,6 +107,19 @@ export default function Home() {
               <p className="mt-2 text-sm text-muted">{f.d}</p>
             </div>
           ))}
+        </div>
+        <div className="mt-16">
+          <h2 className="font-display text-3xl font-semibold tracking-tight">Questions</h2>
+          <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-surface">
+            {faqs.map((f) => (
+              <details key={f.q} className="group px-5 py-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
+                  {f.q}<span className="text-xl text-muted transition group-open:rotate-45" aria-hidden>+</span>
+                </summary>
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">{f.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-3xl bg-brand p-8 text-brand-fg sm:flex-row sm:items-center">
           <div>

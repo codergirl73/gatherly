@@ -2,10 +2,11 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { patchRun, useRun, type Run } from "@/lib/client/store";
+import { useUser } from "@/lib/client/auth";
 import type { AgentEvent } from "@/lib/schemas";
 import { ProgressView } from "./ProgressView";
 import { OverlapViz } from "./OverlapViz";
-import { PlanView, planToText } from "./PlanView";
+import { AtAGlance, PlanView, planToText } from "./PlanView";
 import { CompareView } from "./CompareView";
 import { ErrorState } from "./ErrorState";
 import { AvatarStack } from "./Avatar";
@@ -36,6 +37,12 @@ export function RunClient({ id }: { id: string }) {
   const [baselineBusy, setBaselineBusy] = useState(false);
   const [baselineFailed, setBaselineFailed] = useState(false);
   const [copied, setCopied] = useState(false);
+  const { user, ready } = useUser();
+  const [waited, setWaited] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setWaited(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
   const input0 = run?.input;
 
   const start = useCallback(async (input: Run["input"]) => {
@@ -80,6 +87,9 @@ export function RunClient({ id }: { id: string }) {
     setTimeout(() => loadBaseline(run.input), 0); // LLM-only plan runs in parallel so the comparison is ready
   }, [run, id, start, loadBaseline]);
 
+  if (!run && (!ready || (user && !waited))) {
+    return <div className="mx-auto max-w-xl px-4 py-20"><div className="skeleton h-40 rounded-2xl" aria-busy aria-label="Loading your event" /></div>;
+  }
   if (!run) {
     return <div className="px-4 py-20"><ErrorState kind="unknown" message="We couldn't find that event. It may have been cleared from this browser." /></div>;
   }
@@ -114,6 +124,8 @@ export function RunClient({ id }: { id: string }) {
                 <ul className="mt-2 list-disc pl-5">{run.warnings.map((w) => <li key={w}>{w}</li>)}</ul></details>
             )}
           </header>
+
+          <AtAGlance plan={run.plan} />
 
           {run.overlap && <OverlapViz overlap={run.overlap} people={names} />}
 

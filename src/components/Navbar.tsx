@@ -4,11 +4,12 @@ import { useState } from "react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { Avatar } from "./Avatar";
-import { signOut, useUser } from "@/lib/client/store";
+import { signOut, useUser } from "@/lib/client/auth";
 
 export function Navbar() {
   const { user, ready } = useUser();
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState(false);
   const links = [
     { href: "/plan", label: "Plan an event" },
     { href: "/events", label: "My events" },
@@ -27,10 +28,19 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {ready && user ? (
-            <div className="hidden items-center gap-2 md:flex">
-              <Avatar name={user.name} size={32} />
-              <span className="max-w-28 truncate text-sm font-medium">{user.name}</span>
-              <button onClick={signOut} className="rounded-full px-3 py-1.5 text-sm text-muted hover:bg-surface-2 hover:text-fg">Sign out</button>
+            <div className="relative hidden md:block">
+              <button type="button" onClick={() => setMenu((m) => !m)} aria-haspopup="menu" aria-expanded={menu}
+                className="flex items-center gap-2 rounded-full border border-border bg-surface py-1 pl-1 pr-3 transition hover:bg-surface-2">
+                <Avatar name={user.name} size={28} />
+                <span className="max-w-28 truncate text-sm font-medium">{user.name}</span>
+              </button>
+              {menu && (
+                <div role="menu" className="absolute right-0 mt-2 w-60 rounded-2xl border border-border bg-surface p-2 shadow-xl" onMouseLeave={() => setMenu(false)}>
+                  <div className="px-3 py-2"><div className="truncate text-sm font-semibold">{user.name}</div><div className="truncate text-xs text-muted">{user.email}</div></div>
+                  <Link role="menuitem" href="/events" onClick={() => setMenu(false)} className="block rounded-xl px-3 py-2 text-sm hover:bg-surface-2">My events</Link>
+                  <button role="menuitem" onClick={() => { setMenu(false); void signOut(); }} className="block w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-surface-2">Sign out</button>
+                </div>
+              )}
             </div>
           ) : (
             <Link href="/login" className="hidden rounded-full px-4 py-2 text-sm font-medium hover:bg-surface-2 md:inline-block">Sign in</Link>
@@ -58,7 +68,7 @@ export function Navbar() {
               <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-base font-medium hover:bg-surface-2">{l.label}</Link>
             ))}
             {ready && user ? (
-              <button onClick={() => { signOut(); setOpen(false); }} className="rounded-xl px-3 py-3 text-left text-base font-medium hover:bg-surface-2">Sign out ({user.name})</button>
+              <button onClick={() => { void signOut(); setOpen(false); }} className="rounded-xl px-3 py-3 text-left text-base font-medium hover:bg-surface-2">Sign out ({user.name})</button>
             ) : (
               <Link href="/login" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-base font-medium hover:bg-surface-2">Sign in</Link>
             )}

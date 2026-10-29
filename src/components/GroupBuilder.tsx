@@ -6,7 +6,7 @@ import { PRESETS } from "@/lib/presets";
 import { Avatar } from "./Avatar";
 import { Button, Card, Field, inputCls } from "./ui";
 import { startRun } from "./PresetButton";
-import { useUser } from "@/lib/client/store";
+import { useUser } from "@/lib/client/auth";
 
 const blankPerson = (): GroupInput["people"][number] => ({
   name: "",
@@ -34,39 +34,63 @@ export function GroupBuilder() {
   const { user } = useUser();
   const [g, setG] = useState<GroupInput>(initial);
   const [errors, setErrors] = useState<string[]>([]);
+  const [step, setStep] = useState(0);
 
   const patch = (p: Partial<GroupInput>) => setG((s) => ({ ...s, ...p }));
   const setPerson = (i: number, fn: (p: GroupInput["people"][number]) => GroupInput["people"][number]) =>
     setG((s) => ({ ...s, people: s.people.map((p, j) => (j === i ? fn(p) : p)) }));
 
+  const cleaned = (): GroupInput => ({
+    ...g,
+    constraints: g.constraints?.trim() || undefined,
+    people: g.people.map((p) => ({ ...p, name: p.name.trim(), favorites: p.favorites.filter((f) => f.name.trim()) })),
+  });
+
+  const problemsFor = (which: number): string[] => {
+    const c = cleaned();
+    const out: string[] = [];
+    if (which >= 0 && c.city.trim().length < 2) out.push("Enter the city for the event.");
+    if (which >= 1) {
+      c.people.forEach((p, i) => {
+        if (!p.name) out.push(`Person ${i + 1} needs a name.`);
+        else if (p.favorites.length < 3) out.push(`${p.name} needs at least 3 favorites.`);
+      });
+      const names = c.people.map((p) => p.name.toLowerCase());
+      if (new Set(names).size !== names.length) out.push("Each person needs a different name.");
+    }
+    if (!out.length && which >= 1) {
+      const r = groupInputSchema.safeParse(c);
+      if (!r.success) out.push(r.error.issues[0].message);
+    }
+    return out;
+  };
+
+  const goTo = (n: number) => {
+    // Moving forward validates the steps being left; moving back is always allowed.
+    if (n > step) {
+      const p = problemsFor(Math.min(step, 1));
+      setErrors(p);
+      if (p.length) return window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    setErrors([]);
+    setStep(n);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Drop blank favorites, then validate with the same schema the server uses.
-    const cleaned: GroupInput = {
-      ...g,
-      constraints: g.constraints?.trim() || undefined,
-      people: g.people.map((p) => ({ ...p, name: p.name.trim(), favorites: p.favorites.filter((f) => f.name.trim()) })),
-    };
-    const problems: string[] = [];
-    if (cleaned.city.trim().length < 2) problems.push("Enter the city for the event.");
-    cleaned.people.forEach((p, i) => {
-      if (!p.name) problems.push(`Person ${i + 1} needs a name.`);
-      else if (p.favorites.length < 3) problems.push(`${p.name} needs at least 3 favorites.`);
-    });
-    const names = cleaned.people.map((p) => p.name.toLowerCase());
-    if (new Set(names).size !== names.length) problems.push("Each person needs a different name.");
-    if (!problems.length) {
-      const r = groupInputSchema.safeParse(cleaned);
-      if (!r.success) problems.push(r.error.issues[0].message);
-    }
-    setErrors(problems);
-    if (problems.length) return window.scrollTo({ top: 0, behavior: "smooth" });
-    startRun(router, cleaned);
+    if (step < 2) return goTo(step + 1);
+    const p = problemsFor(1);
+    setErrors(p);
+    if (p.length) return window.scrollTo({ top: 0, behavior: "smooth" });
+    startRun(router, cleaned());
   };
 
   return (
     <form onSubmit={submit} noValidate className="flex flex-col gap-8">
-      <div>
+      <Stepper step={step} onGo={(n) => (n <= step ? goTo(n) : undefined)} />
+
+      {step === 0 && <div>
         <p className="mb-2 text-sm font-medium text-muted">Start from an example</p>
         <div className="flex flex-wrap gap-2">
           {PRESETS.map((p) => (
@@ -76,7 +100,7 @@ export function GroupBuilder() {
             </button>
           ))}
         </div>
-      </div>
+      </div>}
 
       {errors.length > 0 && (
         <div role="alert" className="rounded-2xl border border-accent/40 bg-accent/10 p-4 text-sm">
@@ -85,7 +109,7 @@ export function GroupBuilder() {
         </div>
       )}
 
-      <Card>
+      {step === 0 && <Card className="rise">
         <h2 className="font-display text-xl font-semibold">The event</h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <Field label="Event type" htmlFor="type">
@@ -113,9 +137,9 @@ export function GroupBuilder() {
             </Field>
           </div>
         </div>
-      </Card>
+      </Card>}
 
-      <div className="flex flex-col gap-4">
+      {step === 1 && <div className="flex flex-col gap-4">
         <div className="flex items-end justify-between">
           <div>
             <h2 className="font-display text-xl font-semibold">Who&apos;s coming</h2>
@@ -160,14 +184,78 @@ export function GroupBuilder() {
         {g.people.length < 6 && (
           <Button type="button" variant="secondary" className="self-start" onClick={() => setG((s) => ({ ...s, people: [...s.people, blankPerson()] }))}>+ Add a person</Button>
         )}
-      </div>
+      </div>}
+
+      {step === 2 && <Review g={cleaned()} onEdit={goTo} />}
 
       <div className="sticky bottom-0 -mx-4 border-t border-border bg-bg/90 px-4 py-4 backdrop-blur sm:mx-0 sm:rounded-2xl sm:border">
-        <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted">Takes about a minute. Gatherly never books or pays for anything.</p>
-          <Button type="submit" size="lg">Plan our event →</Button>
+        <div className="flex items-center justify-between gap-3">
+          {step > 0 ? <Button type="button" variant="ghost" onClick={() => goTo(step - 1)}>← Back</Button> : <p className="hidden text-sm text-muted sm:block">Takes about a minute. Gatherly never books or pays for anything.</p>}
+          <Button type="submit" size="lg" className="ml-auto">{step < 2 ? "Continue →" : "Plan our event →"}</Button>
         </div>
       </div>
     </form>
+  );
+}
+
+const STEPS = ["Event", "People", "Review"];
+
+function Stepper({ step, onGo }: { step: number; onGo: (n: number) => void }) {
+  return (
+    <ol className="flex items-center gap-2" aria-label="Progress">
+      {STEPS.map((label, i) => (
+        <li key={label} className="flex flex-1 items-center gap-2 last:flex-none">
+          <button type="button" onClick={() => onGo(i)} disabled={i > step} aria-current={i === step ? "step" : undefined}
+            className="flex items-center gap-2 rounded-full disabled:cursor-default">
+            <span className={`grid size-8 place-items-center rounded-full text-sm font-bold transition ${i < step ? "bg-good text-white" : i === step ? "bg-brand text-brand-fg" : "bg-surface-2 text-muted"}`}>
+              {i < step ? "✓" : i + 1}
+            </span>
+            <span className={`text-sm font-semibold ${i === step ? "text-fg" : "text-muted"}`}>{label}</span>
+          </button>
+          {i < STEPS.length - 1 && <span className={`h-px flex-1 ${i < step ? "bg-good" : "bg-border"}`} />}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function Review({ g, onEdit }: { g: GroupInput; onEdit: (n: number) => void }) {
+  return (
+    <div className="flex flex-col gap-4 rise">
+      <Card>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wider text-brand">The event</div>
+            <h2 className="mt-1 font-display text-2xl font-semibold capitalize">{g.eventType} in {g.city}</h2>
+          </div>
+          <button type="button" onClick={() => onEdit(0)} className="text-sm font-semibold text-brand hover:underline">Edit</button>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2 text-sm">
+          <span className="rounded-full bg-surface-2 px-3 py-1">Budget {g.budget}</span>
+          {g.date && <span className="rounded-full bg-surface-2 px-3 py-1">{g.date}</span>}
+          <span className="rounded-full bg-surface-2 px-3 py-1">{g.people.length} people</span>
+        </div>
+        {g.constraints && <p className="mt-3 rounded-xl bg-surface-2 p-3 text-sm"><strong>Constraints: </strong>{g.constraints}</p>}
+      </Card>
+      <Card>
+        <div className="flex items-center justify-between">
+          <div className="text-xs font-semibold uppercase tracking-wider text-brand">The group</div>
+          <button type="button" onClick={() => onEdit(1)} className="text-sm font-semibold text-brand hover:underline">Edit</button>
+        </div>
+        <ul className="mt-3 flex flex-col divide-y divide-border">
+          {g.people.map((p) => (
+            <li key={p.name} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
+              <Avatar name={p.name} size={32} />
+              <div>
+                <div className="font-semibold">{p.name}</div>
+                <div className="mt-1 flex flex-wrap gap-1.5">
+                  {p.favorites.map((f) => <span key={f.name + f.category} className="rounded-full bg-surface-2 px-2.5 py-1 text-xs text-muted">{f.name}</span>)}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Card>
+    </div>
   );
 }

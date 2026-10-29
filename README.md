@@ -76,7 +76,7 @@ flowchart LR
 - **Qloo client** (`src/lib/qloo/client.ts`): request queue (max 4 starts/second), per-request timeout, exponential backoff on 429/5xx honoring `Retry-After`, in-memory cache plus in-flight de-duplication. The API key is only ever used server-side.
 - **Agent** (`src/lib/agent/`): Gemini function-calling loop with four tools (`resolve_entities`, `compare_tastes`, `get_insights`, `build_plan`). Progress events stream to the UI as the tools run.
 - **Plan JSON** is validated with zod (`src/lib/schemas.ts`) and grounded before the UI sees it.
-- **"Login"** is a lightweight local profile (name + email kept in `localStorage`). There are no accounts, passwords or server-side user data.
+- **Accounts** use Supabase Auth (email + password, optional Google). Signed-in users' events are saved to a Postgres `events` table protected by row-level security (`supabase/schema.sql`). Guests can still plan; their events stay in the browser.
 
 ## Setup
 
@@ -98,7 +98,16 @@ Environment variables (see `.env.example`):
 | `GOOGLE_CLOUD_PROJECT` | GCP project with Vertex AI. |
 | `GOOGLE_CLOUD_LOCATION` | Vertex region (default `us-central1`). |
 | `GEMINI_MODEL` | Model id (default `gemini-2.5-flash`). |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project for accounts and saved events. Blank = guest mode. |
+| `NEXT_PUBLIC_AUTH_GOOGLE` | Set to `1` once the Google provider is enabled in Supabase. |
 | `GOOGLE_SERVICE_ACCOUNT_JSON_B64` | Hosted deploys only: base64 of a service-account JSON with the *Vertex AI User* role. |
+
+### Accounts (Supabase)
+
+1. Create a project at supabase.com. In **SQL Editor**, run `supabase/schema.sql`.
+2. **Authentication → URL Configuration**: set *Site URL* to your deployed URL and add `http://localhost:3000/**` and your deployed URL `/**` to *Redirect URLs*.
+3. Copy the project URL and anon key (**Project Settings → API**) into `.env.local` / Vercel env vars.
+4. Optional: enable the Google provider and set `NEXT_PUBLIC_AUTH_GOOGLE=1`.
 
 ## Tests and checks
 

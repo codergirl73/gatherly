@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { deleteRun, useRuns, useUser } from "@/lib/client/store";
+import { deleteRun, useRuns } from "@/lib/client/store";
+import { useUser } from "@/lib/client/auth";
 import { AvatarStack } from "@/components/Avatar";
 import { Badge, Card, LinkButton } from "@/components/ui";
 
@@ -12,10 +13,16 @@ export default function EventsPage() {
       <div className="flex items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">My events</h1>
-          <p className="mt-2 text-muted">{user ? `Saved for ${user.name} in this browser.` : "Saved in this browser. Sign in to put your name on them."}</p>
+          <p className="mt-2 text-muted">{user ? `Saved to your account, ${user.name}.` : "Saved on this device."}</p>
         </div>
         <LinkButton href="/plan">New event</LinkButton>
       </div>
+      {!user && (
+        <Card className="mt-6 flex flex-col gap-3 bg-brand-soft sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm"><strong>Sign in to keep your events.</strong> Guest events live only on this device and disappear if you clear your browser data.</p>
+          <LinkButton href="/login" size="md">Sign in or create account</LinkButton>
+        </Card>
+      )}
       {runs.length === 0 ? (
         <Card className="mt-10 py-14 text-center">
           <div className="text-5xl" aria-hidden>🗓️</div>

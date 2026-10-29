@@ -10,9 +10,9 @@ interface Props {
   mode: "qloo" | "llm";
 }
 
-function Section({ kicker, title, children }: { kicker: string; title: string; children: ReactNode }) {
+function Section({ id, kicker, title, children }: { id: string; kicker: string; title: string; children: ReactNode }) {
   return (
-    <Card className="rise">
+    <Card id={id} className="rise scroll-mt-36">
       <div className="text-xs font-semibold uppercase tracking-wider text-brand">{kicker}</div>
       <h3 className="mt-1 font-display text-xl font-semibold">{title}</h3>
       <div className="mt-3 flex flex-col gap-3">{children}</div>
@@ -42,12 +42,12 @@ export function PlanView({ plan, evidence = {}, mode }: Props) {
   const ev = (id?: string) => (id ? evidence[id] : undefined);
   return (
     <div className="flex flex-col gap-4">
-      <Section kicker="Theme" title={plan.theme.name}>
+      <Section id="theme" kicker="Theme" title={plan.theme.name}>
         <p className="text-muted">{plan.theme.description}</p>
         <Why why={plan.theme.why} fits={plan.theme.fits} mode="none" />
       </Section>
 
-      <Section kicker="Venue & cuisine" title={plan.venue.name}>
+      <Section id="venue" kicker="Venue & cuisine" title={plan.venue.name}>
         <div className="flex flex-wrap gap-2">
           <Badge tone="brand">{plan.venue.cuisine}</Badge>
           <Badge tone="warn">Check hours, prices & availability before booking</Badge>
@@ -56,7 +56,7 @@ export function PlanView({ plan, evidence = {}, mode }: Props) {
         <Why why={plan.venue.why} fits={plan.venue.fits} evidence={ev(plan.venue.entityId)} mode={mode} />
       </Section>
 
-      <Section kicker="Playlist" title="The sound of the night">
+      <Section id="playlist" kicker="Playlist" title="The sound of the night">
         <p className="text-muted">{plan.playlist.direction}</p>
         <ul className="flex flex-col divide-y divide-border">
           {plan.playlist.artists.map((a) => (
@@ -68,14 +68,14 @@ export function PlanView({ plan, evidence = {}, mode }: Props) {
         </ul>
       </Section>
 
-      <Section kicker="Activity" title={plan.activity.name}>
+      <Section id="activity" kicker="Activity" title={plan.activity.name}>
         {plan.activity.address && <p className="text-sm text-muted">📍 {plan.activity.address}</p>}
         <Badge tone="warn">Check hours & availability before booking</Badge>
         <Why why={plan.activity.why} fits={plan.activity.fits} evidence={ev(plan.activity.entityId)} mode={mode} />
       </Section>
 
       {plan.film && (
-        <Section kicker="Film" title={plan.film.name}>
+        <Section id="film" kicker="Film" title={plan.film.name}>
           <Why why={plan.film.why} fits={plan.film.fits} evidence={ev(plan.film.entityId)} mode={mode} />
         </Section>
       )}
@@ -120,4 +120,27 @@ export function planToText(plan: Plan, city: string): string {
     "Check hours, prices and availability before booking. Planned with Gatherly.",
   ];
   return lines.filter((l, i) => l || lines[i - 1]).join("\n");
+}
+
+/** Four tiles summarising the plan, each jumping to its full card. */
+export function AtAGlance({ plan }: { plan: Plan }) {
+  const tiles = [
+    { id: "venue", icon: "🍽️", label: "Eat & drink", value: plan.venue.name, sub: plan.venue.cuisine },
+    { id: "activity", icon: "📍", label: "Do", value: plan.activity.name, sub: plan.activity.address ?? "" },
+    { id: "playlist", icon: "🎵", label: "Listen", value: plan.playlist.artists.slice(0, 2).map((a) => a.name).join(", "), sub: `+${Math.max(0, plan.playlist.artists.length - 2)} more artists` },
+    ...(plan.film ? [{ id: "film", icon: "🎬", label: "Watch", value: plan.film.name, sub: "Film pick" }] : []),
+  ];
+  return (
+    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Plan at a glance">
+      {tiles.map((t) => (
+        <li key={t.id}>
+          <a href={`#${t.id}`} className="group flex h-full flex-col gap-1 rounded-2xl border border-border bg-surface p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-brand hover:shadow-md">
+            <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted"><span aria-hidden>{t.icon}</span>{t.label}</span>
+            <span className="font-display text-lg font-semibold leading-snug">{t.value}</span>
+            {t.sub && <span className="line-clamp-1 text-sm text-muted">{t.sub}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
 }
