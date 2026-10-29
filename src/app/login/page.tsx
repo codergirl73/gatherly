@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, Field, inputCls } from "@/components/ui";
+import { Gather3D } from "@/components/Gather3D";
 import { sendPasswordReset, signInWithGoogle, signInWithPassword, signUp, useUser } from "@/lib/client/auth";
 import { accountsEnabled } from "@/lib/client/supabase";
 
@@ -74,25 +75,7 @@ export default function LoginPage() {
             <p className="mt-4 max-w-md text-lg text-white/70">Save every plan to your account and open it on any device.</p>
           </div>
 
-          <div className="my-10 max-w-md rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur">
-            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-white/60">
-              <span>Sample plan</span><span className="rounded-full bg-white/15 px-2.5 py-1 normal-case tracking-normal text-white">Lisbon · 5 people</span>
-            </div>
-            <div className="mt-3 font-display text-2xl font-semibold">Lisbon&apos;s Artistic Soul</div>
-            <div className="mt-4 space-y-2.5 text-sm">
-              {[["🍽️", "Venue & cuisine", "Fits 4 of 5"], ["🎵", "Playlist", "5 artists"], ["📍", "Activity", "Fits 3 of 5"]].map(([i, l, f]) => (
-                <div key={l} className="flex items-center justify-between rounded-xl bg-white/10 px-3.5 py-2.5">
-                  <span className="flex items-center gap-2.5"><span>{i}</span>{l}</span><span className="text-white/70">{f}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 flex items-center gap-2">
-              {["Ana", "Liam", "Yuki", "Omar", "Greta"].map((n, i) => (
-                <span key={n} className="grid size-7 place-items-center rounded-full text-xs font-bold ring-2 ring-[#2a1c63]" style={{ background: ["#ff6b4a", "#6d4aff", "#14915f", "#d6409f", "#0e7ad6"][i], marginLeft: i ? -8 : 0 }}>{n[0]}</span>
-              ))}
-              <span className="ml-1 text-xs text-white/70">tastes matched</span>
-            </div>
-          </div>
+          <Gather3D names={["Ana", "Liam", "Yuki", "Omar", "Greta"]} className="my-6 h-72" />
 
           <ul className="space-y-3 text-sm text-white/80">
             {["Every pick explains whose favorites it connects to", "See where your group overlaps, and where it differs", "Reopen and share plans from any device"].map((t) => (

@@ -100,7 +100,7 @@ export function RunClient({ id }: { id: string }) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
-      {run.status === "running" && <ProgressView steps={run.steps} warnings={run.warnings} city={input.city} />}
+      {run.status === "running" && <ProgressView steps={run.steps} warnings={run.warnings} city={input.city} names={names} />}
       {run.status === "error" && <div className="py-10"><ErrorState kind={run.error?.kind ?? "unknown"} message={run.error?.message ?? "Please try again."} onRetry={retry} /></div>}
 
       {run.status === "done" && run.plan && (

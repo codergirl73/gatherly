@@ -1,16 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Card } from "./ui";
+import { TasteConstellation } from "./TasteConstellation";
 
-export function ProgressView({ steps, warnings, city }: { steps: string[]; warnings: string[]; city: string }) {
+export function ProgressView({ steps, warnings, city, names }: { steps: string[]; warnings: string[]; city: string; names: string[] }) {
   const [secs, setSecs] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setSecs((s) => s + 1), 1000);
     return () => clearInterval(t);
   }, []);
   const unique = steps.filter((s, i) => steps.indexOf(s) === i);
+  const phase = unique.some((s) => s.startsWith("Finding") || s.startsWith("Writing")) ? 2 : unique.some((s) => s.startsWith("Comparing")) ? 1 : 0;
   return (
     <div className="mx-auto max-w-xl py-6">
+      <TasteConstellation names={names} phase={phase} className="mx-auto mb-6 max-w-xs" />
       <Card className="rise">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl font-semibold">Planning your event in {city}…</h2>
@@ -37,9 +40,6 @@ export function ProgressView({ steps, warnings, city }: { steps: string[]; warni
           <ul className="mt-5 space-y-1 rounded-xl bg-warn/10 p-3 text-sm text-warn">{warnings.map((w) => <li key={w}>⚠ {w}</li>)}</ul>
         )}
       </Card>
-      <div className="mt-4 space-y-3" aria-hidden>
-        <div className="skeleton h-24 rounded-2xl" /><div className="skeleton h-24 rounded-2xl" />
-      </div>
     </div>
   );
 }

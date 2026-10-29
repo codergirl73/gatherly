@@ -1,7 +1,7 @@
 import { LinkButton } from "@/components/ui";
 import { PresetCard, ExampleButton } from "@/components/PresetButton";
 import { PRESETS } from "@/lib/presets";
-import { Avatar } from "@/components/Avatar";
+import { Gather3D } from "@/components/Gather3D";
 
 const steps = [
   { n: "1", t: "Tell us who's coming", d: "Add 3–6 people, a city and a budget. Everyone shares a few favorites: films, artists, restaurants, places." },
@@ -49,26 +49,17 @@ export default function Home() {
             <p className="mt-4 text-sm text-muted">No sign-up needed. Example groups are made-up people.</p>
           </div>
 
-          <div className="rise relative" style={{ animationDelay: "120ms" }} aria-hidden>
-            <div className="rounded-3xl border border-border bg-surface p-5 shadow-xl">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold">Taste overlap</span>
-                <span className="rounded-full bg-good/15 px-2.5 py-1 text-xs font-semibold text-good">Strong match</span>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["Atmospheric", "Cinematic", "Indie", "Melancholic", "Expressive"].map((t, i) => (
-                  <span key={t} className="rounded-full bg-brand-soft px-3 py-1.5 text-sm font-medium text-brand" style={{ opacity: 1 - i * 0.12 }}>{t}</span>
-                ))}
-              </div>
-              <div className="mt-5 rounded-2xl bg-surface-2 p-4">
-                <div className="text-xs font-medium uppercase tracking-wide text-muted">Venue pick</div>
-                <div className="mt-1 font-display text-xl font-semibold">Time Out Market</div>
-                <p className="mt-1 text-sm text-muted">Lisbon · fits 4 of 5 people</p>
-                <div className="mt-3 flex items-center gap-2">
-                  {["Ana", "Liam", "Yuki", "Greta"].map((n) => <Avatar key={n} name={n} size={26} ring />)}
+          <div className="rise mx-auto w-full max-w-md lg:max-w-none" style={{ animationDelay: "120ms" }}>
+            <Gather3D names={["Ana", "Liam", "Yuki", "Omar", "Greta"]} className="h-[22rem] sm:h-[26rem]" />
+            <div className="mx-auto -mt-2 max-w-sm rounded-2xl border border-border bg-surface/95 p-4 shadow-xl backdrop-blur">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-wider text-brand">Everyone, one plan · Lisbon</div>
+                  <div className="font-display text-lg font-semibold">Time Out Market</div>
                 </div>
+                <span className="rounded-full bg-good/15 px-2.5 py-1 text-xs font-semibold text-good">Fits 4 of 5</span>
               </div>
-              <p className="mt-4 text-sm text-muted">&ldquo;Yuki and Greta both love atmospheric, cinematic worlds, and Liam&apos;s indie taste lands here too.&rdquo;</p>
+              <p className="mt-1.5 text-sm text-muted">Five different tastes, gathered around the place that fits most of them.</p>
             </div>
           </div>
         </div>

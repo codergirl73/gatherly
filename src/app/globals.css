@@ -100,3 +100,28 @@ body {
   header, footer, .no-print { display: none !important; }
   body { background: #fff; }
 }
+
+@keyframes constellation-flow { to { stroke-dashoffset: -9; } }
+.constellation-flow { animation: constellation-flow 1.2s linear infinite; }
+
+@keyframes constellation-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.constellation-float { animation: constellation-float 5s ease-in-out infinite; }
+
+@keyframes constellation-ripple {
+  0% { r: 9; opacity: .7; }
+  100% { r: 30; opacity: 0; }
+}
+.constellation-ripple { animation: constellation-ripple 2.6s ease-out infinite; }
+
+@keyframes constellation-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent); }
+  70% { box-shadow: 0 0 0 12px transparent; }
+}
+.constellation-pulse { animation: constellation-pulse 1.6s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .constellation-flow, .constellation-float, .constellation-ripple, .constellation-pulse { animation: none; }
+}
