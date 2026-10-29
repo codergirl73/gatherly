@@ -2,7 +2,7 @@
 
 **An AI agent that plans group events everyone will enjoy, powered by [Qloo](https://qloo.com)'s Taste AI.**
 
-> Live app: _add the Vercel URL here after deploy_
+> **Live app: https://gatherly-omega-eight.vercel.app**
 
 Gatherly takes a group of 3–6 people (each sharing a few favorite films, shows, artists, restaurants, places, brands or books), finds where their tastes overlap and where they differ, and plans the event: **venue and cuisine, a theme, a playlist, an activity and a film**. Every pick explains *whose favorites it connects to*. When tastes clash, Gatherly flags the tradeoff and offers a balanced alternative.
 
@@ -99,6 +99,7 @@ Environment variables (see `.env.example`):
 | `GOOGLE_CLOUD_PROJECT` | Vertex AI option: GCP project with Vertex AI enabled and billing on. |
 | `GOOGLE_CLOUD_LOCATION` | Vertex region (default `us-central1`). |
 | `GEMINI_MODEL` | Model id (default `gemini-3.5-flash`). |
+| `GEMINI_FALLBACK_MODEL` | Optional. Used after two transient failures (default `gemini-3.1-flash-lite`). |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project for accounts and saved events. Blank = guest mode. |
 | `NEXT_PUBLIC_AUTH_GOOGLE` | Set to `1` once the Google provider is enabled in Supabase. |
 | `GOOGLE_SERVICE_ACCOUNT_JSON_B64` | Hosted deploys only: base64 of a service-account JSON with the *Vertex AI User* role. |

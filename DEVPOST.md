@@ -42,5 +42,9 @@ Taste data changes what an agent can do: instead of guessing, it can discover (a
 - Qloo audience and demographic signals for larger groups.
 - Multi-stop itineraries (dinner, then activity) with travel-time awareness.
 
+## Try it
+https://gatherly-omega-eight.vercel.app: click **Try an example group**, or sign in to save events.
+Code: https://github.com/codergirl73/gatherly
+
 ## Built with
 Qloo Taste AI API, Gemini on Vertex AI, Next.js, TypeScript, Tailwind CSS, zod, Vitest, Vercel.
