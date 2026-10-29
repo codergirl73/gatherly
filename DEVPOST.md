@@ -103,6 +103,32 @@ Taste data changes what an agent can do: instead of guessing, it can discover (a
 - Qloo audience and demographic signals for larger groups.
 - Multi-stop itineraries (dinner, then an activity) with travel time between stops.
 
+## How Gatherly maps to the judging criteria
+
+**Technological implementation: how thoroughly and skillfully is Qloo used?**
+Four Qloo endpoints do real work: `/search` (typeahead and entity resolution), `/v2/tags` (cuisines), `/v2/analysis/compare` (per-person taste overlap) and `/v2/insights` with location, tag, price-level and exclusion filters. Each part of the plan is queried once for the group and once per person (about 50 Qloo requests per plan) so every pick is ranked by how many members it truly fits. It is a non-trivial system: a tool-using agent, a validator that rejects any pick Qloo did not return, a rate-limited, cached, retrying Qloo client, streamed progress, and live tests proving Qloo's filters are honored.
+
+**Design: a complete, coherent product, not a proof of concept?**
+Landing page, accounts (password and email link), a three-step builder with live search, a streamed progress view, a taste-overlap visualization, evidence-backed plan cards, My events, error and empty states, light and dark mode, and a layout that works on phones.
+
+**Potential impact: a credible case for a real problem and a real audience?**
+Group planning is a real, recurring chore for team leads and people-ops running socials and offsites, for remote teams meeting in person, and for friends organizing birthdays. Today it is solved by guesswork or a group chat that ends with the loudest voice winning. Gatherly gives every member a voice, flags tradeoffs honestly, respects explicit constraints (dietary, access, budget) and never books or pays for anything on its own.
+
+**Quality of the idea: a creative, non-obvious use of Qloo?**
+Qloo is used for *group* taste, not individual recommendation: it compares people against each other to find shared and unique taste, and it transfers taste across domains. Someone's favorite films, artists and restaurants all become signals that point to a city venue they have never heard of. The Qloo on/off view makes the difference visible, and the grounding rule means the agent can only recommend what Qloo actually returned.
+
+## Built during the submission period
+Gatherly was created from scratch between the start of the submission period and the deadline. It reuses only open-source libraries (Next.js, React, Tailwind, Three.js, zod, Vitest, Supabase client) and the Qloo and Gemini APIs, used within their terms.
+
+## Testing instructions
+No login, payment or installation is needed, and the app is free to use.
+1. Open https://gatherly-omega-eight.vercel.app.
+2. Click **Try an example group**, or **Plan your own event** and search for anything you love.
+3. Wait about 45 seconds for the plan. Explore the taste-overlap section, open **Why Qloo matched this**, and use **Qloo on / off** to compare with an LLM-only plan.
+4. Optional: create an account to save plans and reopen them on another device. Email confirmation is off, so sign-up logs you straight in.
+
+Notes: the app will stay online and free through the judging period. If the planning model is briefly busy, the app retries automatically and then shows a friendly message; trying again a minute later works.
+
 ## Built with
 Qloo Taste AI API, Gemini, Next.js, React, TypeScript, Tailwind CSS, Three.js, Supabase (Auth and Postgres), zod, Vitest, Vercel, GitHub.
 

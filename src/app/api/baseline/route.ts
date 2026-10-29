@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   const parsed = groupInputSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Invalid group" }, { status: 400 });
-  if (!rateLimit(`b:${clientIp(req)}`, 12).ok) return Response.json({ error: "Too many requests" }, { status: 429 });
+  if (!rateLimit(`b:${clientIp(req)}`, 30).ok) return Response.json({ error: "Too many requests" }, { status: 429 });
   try {
     return Response.json({ plan: await runBaseline(parsed.data) });
   } catch (e) {
