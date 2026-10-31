@@ -15,6 +15,8 @@ Gatherly uses [Qloo](https://qloo.com)'s taste graph to find where a group's tas
 
 <img src="docs/images/landing.jpg" alt="Gatherly landing page: five different tastes gathering around one plan" width="900">
 
+<img src="docs/images/gatherly-flow.gif" alt="Gatherly flow: landing page, describing the night, reviewing the crew, and the agent starting to plan" width="900">
+
 </div>
 
 Built for the Qloo Agentic Hackathon. All example people are made up.
