@@ -7,9 +7,10 @@ import { runAgent } from "../src/lib/agent/loop";
 const input = groupInputSchema.parse(JSON.parse(readFileSync(process.argv[2], "utf8")));
 const qloo = new QlooClient({ apiKey: process.env.QLOO_API_KEY! });
 const t = Date.now();
+const at = () => `${((Date.now() - t) / 1000).toFixed(1)}s`;
 try {
-  const { plan } = await runAgent({ input, qloo, emit: (e) => (e.type === "step" ? console.log("[step]", e.message) : null) });
-  console.log("OK", plan.title, `${Date.now() - t}ms`);
+  const { plan } = await runAgent({ input, qloo, emit: (e) => (e.type === "step" ? console.log(at(), e.message) : null) });
+  console.log(at(), "OK", plan.title, `| ${qloo.requestCount} Qloo requests`);
 } catch (e) {
-  console.log("FAILED after", Date.now() - t, "ms:", e instanceof Error ? e.message.slice(0, 600) : e);
+  console.log(at(), "FAILED:", e instanceof Error ? e.message.slice(0, 400) : e);
 }

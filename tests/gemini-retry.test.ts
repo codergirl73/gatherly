@@ -40,3 +40,15 @@ describe("generateWithRetry", () => {
     expect(isRetryable(new Error("API key not valid"))).toBe(false);
   });
 });
+
+describe("thinking level", () => {
+  it("defaults to low thinking and drops the setting if the model rejects it", async () => {
+    const generate = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('{"error":{"code":400,"message":"thinking_level is not supported for this model"}}'))
+      .mockResolvedValueOnce(ok);
+    await generateWithRetry({ contents: "hi" }, { generate, sleep: async () => {} });
+    expect(generate.mock.calls[0][0].config.thinkingConfig.thinkingLevel).toBe("LOW");
+    expect(generate.mock.calls[1][0].config.thinkingConfig).toBeUndefined();
+  });
+});

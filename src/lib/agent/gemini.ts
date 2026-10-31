@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
 let client: GoogleGenAI | undefined;
 
@@ -36,6 +36,12 @@ interface Deps {
   sleep?: (ms: number) => Promise<void>;
 }
 
+/** Planning needs tool routing and structured output, not deep reasoning: low thinking keeps each turn fast. */
+const thinkingLevel = () => {
+  const v = (process.env.GEMINI_THINKING_LEVEL ?? "low").toUpperCase();
+  return v in ThinkingLevel ? (v as ThinkingLevel) : ThinkingLevel.LOW;
+};
+
 /**
  * generateContent with resilience for busy periods: up to 4 attempts with backoff, switching to
  * GEMINI_FALLBACK_MODEL (default gemini-3.1-flash-lite) after the second failure. Non-transient
@@ -48,12 +54,27 @@ export async function generateWithRetry(params: Omit<GenerateParams, "model">, d
   const fallback = process.env.GEMINI_FALLBACK_MODEL ?? "gemini-3.1-flash-lite";
   const waits = [1000, 2500, 5000];
   let last: unknown;
+  let noThinking = false;
   for (let attempt = 0; attempt < 4; attempt++) {
     const model = attempt >= 2 && fallback ? fallback : primary;
     try {
-      return await generate({ ...params, model, config: { ...params.config, httpOptions: { timeout: 60_000, ...params.config?.httpOptions } } });
+      return await generate({
+        ...params,
+        model,
+        config: {
+          ...(noThinking ? {} : { thinkingConfig: { thinkingLevel: thinkingLevel() } }),
+          ...params.config,
+          httpOptions: { timeout: 60_000, ...params.config?.httpOptions },
+        },
+      });
     } catch (e) {
       last = e;
+      // A model that rejects the thinking setting: retry the same attempt once without it.
+      if (!noThinking && /thinking/i.test(e instanceof Error ? e.message : "")) {
+        noThinking = true;
+        attempt--;
+        continue;
+      }
       if (!isRetryable(e) || attempt === 3) throw e;
       console.warn(`gemini ${model} attempt ${attempt + 1} failed, retrying:`, e instanceof Error ? e.message.slice(0, 160) : e);
       await sleep(waits[attempt]);
