@@ -28,6 +28,22 @@ export const geminiModel = () => process.env.GEMINI_MODEL ?? "gemini-3.5-flash";
 const RETRYABLE = /\b(429|500|502|503|504)\b|UNAVAILABLE|DEADLINE_EXCEEDED|RESOURCE_EXHAUSTED|high demand|overloaded|fetch failed|ECONNRESET/i;
 export const isRetryable = (e: unknown) => RETRYABLE.test(e instanceof Error ? `${e.name} ${e.message}` : String(e));
 
+/** Models whose daily quota is spent: skip them until the quota resets instead of failing on every turn. */
+const exhaustedUntil = new Map<string, number>();
+const DAILY_QUOTA = /per day|PerDay|daily/i;
+
+export function noteQuotaError(model: string, e: unknown, now = Date.now()): boolean {
+  const msg = e instanceof Error ? e.message : String(e);
+  if (!/RESOURCE_EXHAUSTED|\b429\b/.test(msg) || !DAILY_QUOTA.test(msg)) return false;
+  // "Please retry in 5h32m39.9s": honor it, but re-check at least hourly in case limits were raised.
+  const m = /retry in (?:(\d+)h)?(?:(\d+)m)?(?:([\d.]+)s)?/i.exec(msg);
+  const secs = m ? Number(m[1] ?? 0) * 3600 + Number(m[2] ?? 0) * 60 + Number(m[3] ?? 0) : 3600;
+  exhaustedUntil.set(model, now + Math.min(Math.max(secs, 60), 3600) * 1000);
+  return true;
+}
+export const isExhausted = (model: string, now = Date.now()) => (exhaustedUntil.get(model) ?? 0) > now;
+export const resetQuotaState = () => exhaustedUntil.clear();
+
 type GenerateParams = Parameters<GoogleGenAI["models"]["generateContent"]>[0];
 type GenerateResult = Awaited<ReturnType<GoogleGenAI["models"]["generateContent"]>>;
 
@@ -56,7 +72,8 @@ export async function generateWithRetry(params: Omit<GenerateParams, "model">, d
   let last: unknown;
   let noThinking = false;
   for (let attempt = 0; attempt < 4; attempt++) {
-    const model = attempt >= 2 && fallback ? fallback : primary;
+    let model = attempt >= 2 && fallback ? fallback : primary;
+    if (isExhausted(model) && fallback && !isExhausted(fallback)) model = fallback;
     try {
       return await generate({
         ...params,
@@ -75,6 +92,8 @@ export async function generateWithRetry(params: Omit<GenerateParams, "model">, d
         attempt--;
         continue;
       }
+      // Daily quota spent on this model: switch to the fallback right away, no waiting.
+      if (noteQuotaError(model, e) && fallback && !isExhausted(fallback)) continue;
       if (!isRetryable(e) || attempt === 3) throw e;
       console.warn(`gemini ${model} attempt ${attempt + 1} failed, retrying:`, e instanceof Error ? e.message.slice(0, 160) : e);
       await sleep(waits[attempt]);

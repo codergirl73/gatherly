@@ -52,3 +52,34 @@ describe("thinking level", () => {
     expect(generate.mock.calls[1][0].config.thinkingConfig).toBeUndefined();
   });
 });
+
+import { isExhausted, noteQuotaError, resetQuotaState } from "../src/lib/agent/gemini";
+
+describe("daily quota handling", () => {
+  const quota = new Error('{"error":{"code":429,"message":"Quota exceeded ... Generate content requests per day limit exceeded on Free Tier. Please retry in 5h32m39.9s.","status":"RESOURCE_EXHAUSTED"}}');
+
+  it("recognizes a spent daily quota and skips that model afterwards", async () => {
+    resetQuotaState();
+    expect(noteQuotaError("m1", quota)).toBe(true);
+    expect(isExhausted("m1")).toBe(true);
+    expect(isExhausted("other")).toBe(false);
+    resetQuotaState();
+  });
+
+  it("ignores ordinary rate-limit errors", () => {
+    resetQuotaState();
+    expect(noteQuotaError("m1", new Error("429 RESOURCE_EXHAUSTED: too many requests per minute"))).toBe(false);
+    expect(isExhausted("m1")).toBe(false);
+  });
+
+  it("goes straight to the fallback model when the primary's daily quota is spent", async () => {
+    resetQuotaState();
+    const generate = vi.fn().mockRejectedValueOnce(quota).mockResolvedValueOnce(ok);
+    const sleep = vi.fn(async () => {});
+    await generateWithRetry({ contents: "hi" }, { generate, sleep });
+    expect(sleep).not.toHaveBeenCalled();
+    const models = generate.mock.calls.map((c) => c[0].model);
+    expect(models[1]).not.toBe(models[0]);
+    resetQuotaState();
+  });
+});
